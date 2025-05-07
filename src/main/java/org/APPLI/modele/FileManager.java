@@ -3,12 +3,18 @@ package org.APPLI.modele;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class FileManager {
 
+    Set<String> chNomVille;
+    TreeMap<String, ArrayList<Integer>> chDistance;
+
     public FileManager() {
-        exportVille();
+        chDistance = exportVille();
+        chNomVille = chDistance.keySet();
     }
 
     public TreeMap<String, ArrayList<Integer>> exportVille() {
@@ -19,14 +25,18 @@ public class FileManager {
 
             while (scanner.hasNextLine()) {
                 String[] line = scanner.nextLine().split(" ");
-                System.out.println(line[0]);
-                System.out.println(line.length);
+                ArrayList<Integer> tempDistance = new ArrayList<Integer>();
+                
+                for (int i = 1; i<line.length;i++) {
+                    tempDistance.add(Integer.parseInt(line[i]));
+                }
+                distances.put(line[0], tempDistance);
             }
-            return distances;
         } catch (Exception e) {
 
-        }finally {
-            return new TreeMap<String, ArrayList<Integer>>();
         }
+        return distances;
     }
+
+
 }
