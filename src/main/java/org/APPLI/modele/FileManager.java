@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 public class FileManager {
+
+
     public TreeMap<String, ArrayList<Integer>> exportVille() {
         TreeMap<String, ArrayList<Integer>> distances = new TreeMap<String, ArrayList<Integer>>();
         try {
