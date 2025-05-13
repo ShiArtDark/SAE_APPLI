@@ -8,18 +8,30 @@ import java.util.TreeMap;
 
 public class FileManager {
 
-
+    /**
+     * Cette méthode permet d'exporter toutes les villes et de les formater dans une structure de données de types TreeMap 
+     * Comme clé, le nom de la ville et la valeur une liste d'entier correspondant à la distance entre chaque ville.
+     * @return TreeMap<String, ArrayList<Integer>()> distance
+     * @throws IOException
+     */
     public TreeMap<String, ArrayList<Integer>> exportVille() throws IOException {
         TreeMap<String, ArrayList<Integer>> distances = new TreeMap<String, ArrayList<Integer>>();
         
-            File file = new File("ressources/data/distances.txt");
-            Scanner scanner = new Scanner(file);
+        File file = new File("ressources/data/distances.txt");
+        Scanner scanner = new Scanner(file);
 
-            while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().split(" ");
-                System.out.println(line[0]);
-                System.out.println(line.length);
+        while (scanner.hasNextLine()) {
+            String[] line = scanner.nextLine().split(" ");
+            
+            ArrayList<Integer> tempDistance = new ArrayList<>();
+            for (int i = 1; i < line.length; i++) {
+                tempDistance.add(Integer.valueOf(line[i]));
             }
+
+            distances.put(line[0], tempDistance);
+        }
+        scanner.close();
+        
         return distances;
     }
     public TreeMap<String, ArrayList<String>> getmembres_APPLI() {
