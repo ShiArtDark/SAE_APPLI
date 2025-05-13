@@ -18,7 +18,7 @@ public class FileManager {
         TreeMap<String, ArrayList<Integer>> distances = new TreeMap<String, ArrayList<Integer>>();
         
         File file = new File("ressources/data/distances.txt");
-        Scanner scanner = new Scanner(file);
+        Scanner scanner = new Scanner(file, "UTF-8");
 
         while (scanner.hasNextLine()) {
             String[] line = scanner.nextLine().split(" ");
@@ -38,7 +38,7 @@ public class FileManager {
         TreeMap<String, ArrayList<String>> membres = new TreeMap<String, ArrayList<String>>();
         try {
             File file = new File("ressources/data/membres_APPLI.txt");
-            Scanner scanner = new Scanner(file);
+            Scanner scanner = new Scanner(file, "UTF-8");
 
             while (scanner.hasNextLine()) {
                 String[] line = scanner.nextLine().split(" ");
