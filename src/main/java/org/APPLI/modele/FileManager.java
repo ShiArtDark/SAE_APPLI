@@ -1,6 +1,7 @@
 package org.APPLI.modele;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -8,9 +9,9 @@ import java.util.TreeMap;
 public class FileManager {
 
 
-    public TreeMap<String, ArrayList<Integer>> exportVille() {
+    public TreeMap<String, ArrayList<Integer>> exportVille() throws IOException {
         TreeMap<String, ArrayList<Integer>> distances = new TreeMap<String, ArrayList<Integer>>();
-        try {
+        
             File file = new File("ressources/data/distances.txt");
             Scanner scanner = new Scanner(file);
 
@@ -19,10 +20,6 @@ public class FileManager {
                 System.out.println(line[0]);
                 System.out.println(line.length);
             }
-
-        } catch (Exception e) {
-
-        }
         return distances;
     }
     public TreeMap<String, ArrayList<String>> getmembres_APPLI() {

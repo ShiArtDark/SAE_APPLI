@@ -119,7 +119,7 @@ public class GrapheOriente {
         int courant = _arrivee;
         chemin.add(_arrivee);
         while (courant != _depart) {
-            courant = _pred.get(courant).getFirst().getValue0();
+            courant = _pred.get(courant).first().getValue0();
             chemin.add(courant);
         }
         Collections.reverse(chemin);
