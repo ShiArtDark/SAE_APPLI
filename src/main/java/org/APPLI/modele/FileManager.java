@@ -14,7 +14,7 @@ public class FileManager {
      * @return TreeMap<String, ArrayList<Integer>()> distance
      * @throws IOException
      */
-    public TreeMap<String, ArrayList<Integer>> exportVille() throws IOException {
+    public static TreeMap<String, ArrayList<Integer>> exportVille() throws IOException {
         TreeMap<String, ArrayList<Integer>> distances = new TreeMap<String, ArrayList<Integer>>();
         
         File file = new File("ressources/data/distances.txt");
@@ -41,23 +41,39 @@ public class FileManager {
      * @return TreeMap<String,ArrayList<String>> pour chaque ville tout ces utilisateurs.
      * @throws IOException
      */
-    public TreeMap<String, ArrayList<String>> exportMembre()  throws IOException{
+    public static TreeMap<String, ArrayList<String>> exportMembre()  throws IOException{
         TreeMap<String, ArrayList<String>> membres = new TreeMap<String, ArrayList<String>>();
         
-            File file = new File("ressources/data/membres_APPLI.txt");
-            Scanner scanner = new Scanner(file, "UTF-8");
+        File file = new File("ressources/data/membres_APPLI.txt");
+        Scanner scanner = new Scanner(file, "UTF-8");
 
-            while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().split(" ");
+        while (scanner.hasNextLine()) {
+            String[] line = scanner.nextLine().split(" ");
 
-                if (!membres.containsKey(line[1])) {
-                    membres.put(line[1],new ArrayList<>()) ;
-                }
-                membres.get(line[1]).add(line[0]);
-
+            if (!membres.containsKey(line[1])) {
+                membres.put(line[1],new ArrayList<>()) ;
             }
+            membres.get(line[1]).add(line[0]);
+
+        }
         return membres;
     }
 
+    /**
+     * Cette méthode permet de désigner pour chaque ville un identifiant dans l'ordre d'apparition des distances
+     * @return TreeMap<String, Integer> exp, Clé NomVille => Identitifiant numérique
+     */
+    public static TreeMap<String, Integer> exportVilleID() throws IOException {
+        TreeMap<String, Integer> exp = new TreeMap<>();
+
+        File file = new File("ressources/data/distances.txt");
+        Scanner scanner = new Scanner(file, "UTF-8");
+        int i = 0;
+        while (scanner.hasNextLine()) {
+            String[] line = scanner.nextLine().split(" ");
+            exp.put(line[0], i++);
+        }
+        return exp;
+    }
 
 }
