@@ -27,8 +27,6 @@ public class GrapheOriente {
 
     }
 
-
-
     public String toString() {
         String res = "Ordre : "+getOrder()+"\ntaille : "+getSize()+"\nDegré Min :"+degreeMin()+"\nDegré Max :"+degreeMax()+"\n";
         for (int i = 0; i < graphe.size(); i++) {

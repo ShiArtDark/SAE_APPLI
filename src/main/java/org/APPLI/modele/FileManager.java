@@ -34,9 +34,16 @@ public class FileManager {
         
         return distances;
     }
-    public TreeMap<String, ArrayList<String>> getmembres_APPLI() {
+
+    /**
+     * Cette méthode permet d'exporter les différements membres du fichier textes ressources "membres_appli.txt"
+     * Permet pour chaque de mettre une clé, une ville, et tout les utilisateur dans une liste
+     * @return TreeMap<String,ArrayList<String>> pour chaque ville tout ces utilisateurs.
+     * @throws IOException
+     */
+    public TreeMap<String, ArrayList<String>> exportMembre()  throws IOException{
         TreeMap<String, ArrayList<String>> membres = new TreeMap<String, ArrayList<String>>();
-        try {
+        
             File file = new File("ressources/data/membres_APPLI.txt");
             Scanner scanner = new Scanner(file, "UTF-8");
 
@@ -44,14 +51,13 @@ public class FileManager {
                 String[] line = scanner.nextLine().split(" ");
 
                 if (!membres.containsKey(line[1])) {
-                    membres.put(line[1],new ArrayList<String>()) ;
+                    membres.put(line[1],new ArrayList<>()) ;
                 }
                 membres.get(line[1]).add(line[0]);
 
             }
-
-        } catch (Exception e) {
-
-        }return membres;
+        return membres;
     }
+
+
 }
