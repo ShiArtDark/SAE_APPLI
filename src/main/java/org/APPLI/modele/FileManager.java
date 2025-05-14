@@ -76,4 +76,22 @@ public class FileManager {
         return exp;
     }
 
+
+    /**
+     * Cette méthode est identique à celle de exportVILLEID cependant le dictionnaire attendu renvoie pour clé un id et la ville en valeur
+     * @return TreeMap<Integer, String> exp Id => Ville
+     */
+    public static TreeMap<Integer, String> exportIDVille() throws IOException {
+        TreeMap<Integer, String> exp = new TreeMap<>();
+
+        File file = new File("ressources/data/distances.txt");
+        Scanner scanner = new Scanner(file, "UTF-8");
+        int i = 0;
+        while(scanner.hasNextLine()) {
+            String[] line = scanner.nextLine().split(" ");
+            exp.put(i, line[0]);
+        }
+        return exp;
+    }
+
 }
