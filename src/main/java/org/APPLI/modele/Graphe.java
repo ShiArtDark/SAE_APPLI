@@ -13,7 +13,7 @@ public class Graphe {
 
     // ======================== CONSTRUCTEUR ========================
 
-    public Graphe (TreeMap<Sommet, Sommet[]> _tab) {
+    public Graphe (TreeMap<Sommet, ArrayList<Sommet>> _tab) {
         sortant = new TreeMap<>();
         entrant = new TreeMap<>();
         source = new TreeSet<>();

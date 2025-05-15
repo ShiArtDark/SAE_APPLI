@@ -11,6 +11,12 @@ public class Sommet {
         id = _id;
     }   
 
+        public Sommet(String _name, int _pass) {
+        name = _name;
+        pass = _pass;
+    }   
+
+
 
     // =================== Get/Set ==========================
     public void setName(String _name) {

@@ -2,6 +2,7 @@ package org.APPLI.modele;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -79,27 +80,43 @@ public class FileManager {
 
     /**
      * Cette méthode est identique à celle de exportVILLEID cependant le dictionnaire attendu renvoie pour clé un id et la ville en valeur
-     * @return TreeMap<Integer, String> exp Id => Ville
+     * @return TreeMap<Integer, String> res Id => Ville
      */
     public static TreeMap<Integer, String> exportIDVille() throws IOException {
-        TreeMap<Integer, String> exp = new TreeMap<>();
+        TreeMap<Integer, String> res = new TreeMap<>();
 
         File file = new File("ressources/data/distances.txt");
         Scanner scanner = new Scanner(file, "UTF-8");
         int i = 0;
         while(scanner.hasNextLine()) {
             String[] line = scanner.nextLine().split(" ");
-            exp.put(i, line[0]);
+            res.put(i, line[0]);
         }
-        return exp;
+        return res;
     }
 
     /**
      * Cette méthode nous permettra de convertir les scénarios sous forme de graphe
      */
-    public static void toGraph(String _scenario) throws IOException {
+    public static TreeMap<Sommet, ArrayList<Sommet>> toGraph(String _scenario) throws IOException {
+        TreeMap<Sommet, ArrayList<Sommet>> res = new TreeMap<>();
+        TreeMap<String,ArrayList<String>> membre = exportMembre(); // On recup les membres
+
         File file = new File("ressources/scenario/"+_scenario);
         Scanner scanner = new Scanner(file, "UTF-8");
+
+        while(scanner.hasNextLine()) {
+            String[] line = scanner.nextLine().split(" -> ");
+            
+            for (String ville : membre.keySet()) {
+                Sommet tempSommet = new Sommet(ville, 0);
+                if (!res.containsKey(tempSommet)) {
+                    res.put(tempSommet, new ArrayList<>());
+                }
+            }
+        }
+
+        return res;
     }
 
 }
