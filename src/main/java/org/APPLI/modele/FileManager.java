@@ -94,4 +94,12 @@ public class FileManager {
         return exp;
     }
 
+    /**
+     * Cette méthode nous permettra de convertir les scénarios sous forme de graphe
+     */
+    public static void toGraph(String _scenario) throws IOException {
+        File file = new File("ressources/scenario/"+_scenario);
+        Scanner scanner = new Scanner(file, "UTF-8");
+    }
+
 }

@@ -29,5 +29,13 @@ public class Sommet {
         return pass;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int _id) {
+        id = _id;
+    }
+
     
 }

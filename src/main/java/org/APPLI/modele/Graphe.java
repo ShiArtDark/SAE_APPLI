@@ -7,61 +7,62 @@ import java.util.TreeSet;
 public class Graphe {
     // On va passer par des identifiants de villes 
 
-    private TreeMap<Integer, TreeSet<Integer>> sortant;
-    private TreeMap<Integer, Integer> entrant;
-    private TreeSet<Integer> source;
+    private TreeMap<Sommet, TreeSet<Sommet>> sortant;
+    private TreeMap<Sommet, Integer> entrant;
+    private TreeSet<Sommet> source;
 
     // ======================== CONSTRUCTEUR ========================
 
-    public Graphe( int[][] _tab ) {
+    public Graphe (TreeMap<Sommet, Sommet[]> _tab) {
         sortant = new TreeMap<>();
         entrant = new TreeMap<>();
         source = new TreeSet<>();
 
-        for (int k = 0; k < _tab.length; k++ ) { // init d'entrant
-            entrant.put(k, 0);
+        for (Sommet som : _tab.keySet()) {
+            entrant.put(som, 0);
         }
 
-        for (int i = 0; i < _tab.length; i++) { // init de sortant
-            TreeSet<Integer> tempSet = new TreeSet<>();
-            for (int voisin : _tab[i]) {
+        for (Sommet som : _tab.keySet()) {
+            TreeSet<Sommet> tempSet = new TreeSet<>();
+
+            for (Sommet voisin : _tab.get(som)) {
                 tempSet.add(voisin);
-                entrant.put(voisin, entrant.get(voisin)+1); // On ajoute un au nombre d'entrant
+                entrant.put(voisin, entrant.get(som)+1);
             }
-            sortant.put(i, tempSet);
+            sortant.put(som, tempSet);
         }
 
-        for (int sommet : entrant.keySet() ) {
-            if (entrant.get(sommet) == 0) {
-                source.add(sommet);
+        for (Sommet som : entrant.keySet()) {
+            if(entrant.get(som) == 0) {
+                source.add(som);
             }
         }
     }
 
     // ======================== GET/SET ========================
 
-    public TreeMap<Integer, TreeSet<Integer>> getSortant() {
+    public TreeMap<Sommet, TreeSet<Sommet>> getSortant() {
         return sortant;
     }
 
-    public TreeMap<Integer, Integer> getEntrant() {
+    public TreeMap<Sommet, Integer> getEntrant() {
         return entrant;
     }
 
-    public TreeSet<Integer> getSource() {
+    public TreeSet<Sommet> getSource() {
         return source;
     }
 
     // ======================== Method ========================
     
 
-    public ArrayList<Integer> triTopologique() {
-        TreeMap<Integer, Integer> degreeEntrant = (TreeMap<Integer, Integer>) entrant.clone();
-        TreeSet<Integer> tempSource = (TreeSet<Integer>) source.clone();
-        ArrayList<Integer> chemin = new ArrayList<>();
+    public ArrayList<Sommet> triTopologique() {
+        TreeMap<Sommet, Integer> degreeEntrant = (TreeMap<Sommet, Integer>) entrant.clone();
+        TreeSet<Sommet> tempSource = (TreeSet<Sommet>) source.clone();
+        ArrayList<Sommet> chemin = new ArrayList<>();
         while (!tempSource.isEmpty()) {
-            int s = tempSource.pollFirst();
-            for(int v : sortant.get(s)) {
+            Sommet s = tempSource.pollFirst();
+            for(Sommet v : sortant.get(s)) {
                 degreeEntrant.put(v,degreeEntrant.get(v) -1);
                 if (degreeEntrant.get(v) == 0) {
                     tempSource.add(v);
