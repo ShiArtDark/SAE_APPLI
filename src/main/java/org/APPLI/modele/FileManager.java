@@ -2,8 +2,8 @@ package org.APPLI.modele;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -74,6 +74,7 @@ public class FileManager {
             String[] line = scanner.nextLine().split(" ");
             exp.put(line[0], i++);
         }
+
         return exp;
     }
 
@@ -90,7 +91,7 @@ public class FileManager {
         int i = 0;
         while(scanner.hasNextLine()) {
             String[] line = scanner.nextLine().split(" ");
-            res.put(i, line[0]);
+            res.put(i++, line[0]);
         }
         return res;
     }
@@ -98,25 +99,66 @@ public class FileManager {
     /**
      * Cette méthode nous permettra de convertir les scénarios sous forme de graphe
      */
+
+    // à optimiser en sorte qu'en un seul passage on puisse crée une seule et unique
     public static TreeMap<Sommet, ArrayList<Sommet>> toGraph(String _scenario) throws IOException {
-        TreeMap<Sommet, ArrayList<Sommet>> res = new TreeMap<>();
+        TreeMap<Sommet, ArrayList<Sommet>> res = new TreeMap<>(Sommet::compareTo);
         TreeMap<String,ArrayList<String>> membre = exportMembre(); // On recup les membres
+        TreeMap<String, ArrayList<Integer>> distance = exportVille();
 
         File file = new File("ressources/scenario/"+_scenario);
         Scanner scanner = new Scanner(file, "UTF-8");
+        Scanner scanner2 = new Scanner(file, "UTF-8");
+
+        res.put(new Sommet("Velizy", 0, distance.get("Velizy"), exportVilleID()), new ArrayList<>()); // exportVilleID est un champ static
+
+        res.put(new Sommet("Velizy", 1, distance.get("Velizy")), new ArrayList<>());
 
         while(scanner.hasNextLine()) {
             String[] line = scanner.nextLine().split(" -> ");
-            
+
             for (String ville : membre.keySet()) {
-                Sommet tempSommet = new Sommet(ville, 0);
-                if (!res.containsKey(tempSommet)) {
-                    res.put(tempSommet, new ArrayList<>());
+                if(membre.get(ville).contains(line[0])) { // création de la ville°
+
+                    Sommet tempSommet = new Sommet(ville, 0, distance.get(ville));
+                    if (!res.containsKey(tempSommet)) {
+                        res.put(tempSommet, new ArrayList<>());
+                        ArrayList<Sommet> vel = res.get(new Sommet("Velizy", 0));
+                        vel.add(tempSommet);
+                        res.put(new Sommet("Velizy", 0), vel);
+                    }
+
+                }
+            }
+            
+        }
+
+        while (scanner2.hasNextLine()) {
+            String line[] = scanner2.nextLine().split(" -> ");
+
+            for (String ville: membre.keySet()) {
+                if(membre.get(ville).contains(line[1])) {
+                    Sommet tempSommet = new Sommet(ville, 1, distance.get(ville));
+                    for (String vi : membre.keySet()) {
+                        if (membre.get(vi).contains(line[0])) {
+                            ArrayList<Sommet> tempList = res.get(new Sommet(vi, 0));
+                            tempList.add(tempSommet);
+                            res.put(new Sommet(vi, 0), tempList);
+                            
+                        }
+                    }
+
+                    ArrayList<Sommet> lastList = new ArrayList<>();
+                    lastList.add(new Sommet("Velizy", 1));
+                    res.put(tempSommet, lastList);
                 }
             }
         }
 
+        scanner.close();
         return res;
     }
+
+
 
 }
