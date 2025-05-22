@@ -23,12 +23,15 @@ public class Sommet {
         pass = _pass;
         distance = _distance;
     }   
-     public Sommet(String _name, int _pass, ArrayList<Integer> _distance, TreeMap<String, Integer> _id) {
+    public Sommet(String _name, int _pass, ArrayList<Integer> _distance, TreeMap<String, Integer> _idVille) {
         name = _name;
         pass = _pass;
         distance = _distance;
-        villeID = _id;
+        villeID = _idVille;
+        id = villeID.get(name);
     }   
+
+ 
     
     public Sommet(String _name, int _pass) {
         name = _name;

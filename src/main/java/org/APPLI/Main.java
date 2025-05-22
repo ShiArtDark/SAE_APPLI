@@ -1,6 +1,5 @@
 package org.APPLI;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -12,14 +11,15 @@ public class Main {
     public static void main(String[] args) {
         try {
 
-            TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph("scenario_1.txt");
-
+            TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph("scenario_8.txt");
             Graphe graphe = new Graphe(map);
-
-            System.out.println(graphe.triTopologique()); 
-            System.out.println(graphe.GetDistance(graphe.triTopologique()));
-            
-        } catch (IOException e) {
+            ArrayList<Sommet> chemin = graphe.triTopologique();
+            System.out.println(graphe.getEntrant());
+          
+            //System.out.println(chemin);
+            System.out.println(graphe.GetDistance(chemin));
+        
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 

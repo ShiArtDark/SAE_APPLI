@@ -2,6 +2,7 @@ package org.APPLI.modele;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -99,64 +100,55 @@ public class FileManager {
     /**
      * Cette méthode nous permettra de convertir les scénarios sous forme de graphe
      */
-
-    // à optimiser en sorte qu'en un seul passage on puisse crée une seule et unique
-    public static TreeMap<Sommet, ArrayList<Sommet>> toGraph(String _scenario) throws IOException {
+    public static TreeMap<Sommet, ArrayList<Sommet>> toGraph(String _scenario) throws Exception{
         TreeMap<Sommet, ArrayList<Sommet>> res = new TreeMap<>(Sommet::compareTo);
-        TreeMap<String,ArrayList<String>> membre = exportMembre(); // On recup les membres
         TreeMap<String, ArrayList<Integer>> distance = exportVille();
+        TreeMap<String, Integer> villeID = exportVilleID();
 
         File file = new File("ressources/scenario/"+_scenario);
         Scanner scanner = new Scanner(file, "UTF-8");
-        Scanner scanner2 = new Scanner(file, "UTF-8");
 
-        res.put(new Sommet("Velizy", 0, distance.get("Velizy"), exportVilleID()), new ArrayList<>()); // exportVilleID est un champ static
+        Sommet velPlus = new Sommet("Velizy", 0, distance.get("Velizy"), exportVilleID());
+        Sommet velMoins = new Sommet("Velizy", 1, distance.get("Velizy"));
 
-        res.put(new Sommet("Velizy", 1, distance.get("Velizy")), new ArrayList<>());
+        res.put(velPlus, new ArrayList<>()); 
+        res.put(velMoins, new ArrayList<>());
 
-        while(scanner.hasNextLine()) {
+
+        while (scanner.hasNext()) {
             String[] line = scanner.nextLine().split(" -> ");
 
-            for (String ville : membre.keySet()) {
-                if(membre.get(ville).contains(line[0])) { // création de la ville°
-
-                    Sommet tempSommet = new Sommet(ville, 0, distance.get(ville));
-                    if (!res.containsKey(tempSommet)) {
-                        res.put(tempSommet, new ArrayList<>());
-                        ArrayList<Sommet> vel = res.get(new Sommet("Velizy", 0));
-                        vel.add(tempSommet);
-                        res.put(new Sommet("Velizy", 0), vel);
-                    }
-
-                }
+            String livVille = getVilleByMembre(line[0]);
+            Sommet livSommet = new Sommet(livVille, 0, distance.get(livVille), villeID);
+            if (!res.containsKey(livSommet)) {
+                res.put(livSommet, new ArrayList<>());
+                ArrayList<Sommet> veliz = res.get(velPlus);
+                veliz.add(livSommet);
+                res.put(velPlus, veliz);
             }
-            
-        }
 
-        while (scanner2.hasNextLine()) {
-            String line[] = scanner2.nextLine().split(" -> ");
+            String recVille = getVilleByMembre(line[1]);
+            Sommet recSommet = new Sommet(recVille, 1, distance.get(recVille), villeID);
+            if (!res.containsKey(recSommet)) {
+                ArrayList<Sommet> tempRec = new ArrayList<>();
+                tempRec.add(velMoins);
 
-            for (String ville: membre.keySet()) {
-                if(membre.get(ville).contains(line[1])) {
-                    Sommet tempSommet = new Sommet(ville, 1, distance.get(ville));
-                    for (String vi : membre.keySet()) {
-                        if (membre.get(vi).contains(line[0])) {
-                            ArrayList<Sommet> tempList = res.get(new Sommet(vi, 0));
-                            tempList.add(tempSommet);
-                            res.put(new Sommet(vi, 0), tempList);
-                            
-                        }
-                    }
-
-                    ArrayList<Sommet> lastList = new ArrayList<>();
-                    lastList.add(new Sommet("Velizy", 1));
-                    res.put(tempSommet, lastList);
-                }
+                res.put(recSommet, tempRec);
             }
+            res.get(livSommet).add(recSommet);
         }
-
-        scanner.close();
         return res;
+    }
+
+    public static String getVilleByMembre(String _member) throws Exception{
+        TreeMap<String,ArrayList<String>> membres = exportMembre();
+
+        for (String ville : membres.keySet()) {
+            if (membres.get(ville).contains(_member)) {
+                return ville;
+            }
+        }
+        throw new Exception("City Not Found");
     }
 
 

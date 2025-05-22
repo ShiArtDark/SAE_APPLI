@@ -23,6 +23,7 @@ public class Graphe {
         for (Sommet som : _tab.keySet()) {
             entrant.put(som, 0);
         }
+        
 
         for (Sommet som : _tab.keySet()) {
             TreeSet<Sommet> tempSet = new TreeSet<>(Sommet::compareTo);
@@ -35,11 +36,14 @@ public class Graphe {
             sortant.put(som, tempSet);
         }
         
+        
         for (Sommet som : entrant.keySet()) {
             if(entrant.get(som) == 0) {
                 source.add(som);
             }
         }
+        
+   
             
         
     }
@@ -61,28 +65,64 @@ public class Graphe {
     // ======================== Method ========================
     
 
-    public ArrayList<Sommet> triTopologique() {
+    public ArrayList<Sommet> triTopologique() throws Exception {
         TreeMap<Sommet, Integer> degreeEntrant = (TreeMap<Sommet, Integer>) entrant.clone();
         LinkedList<Sommet> tempSource = (LinkedList<Sommet>) source.clone();
         ArrayList<Sommet> chemin = new ArrayList<>();
-
+      
         
 
+
         while (!tempSource.isEmpty()) {
-            // Une sélection du sommet i qui a la distance la plus faible du dernier du chemin
-            Sommet s = tempSource.remove(0);
+            // Une sélection du sommet i qui a la distance la plus faible du dernier du chemin*
+            int index = 0;
+            
+            if (chemin.size() > 1 ) {
+                int distance = chemin.get(chemin.size()-1).getDistance().get(tempSource.get(0).getId());
+                int nSortant = 0;
+                for (int i = 1; i < tempSource.size()-2; i++) {
+                    
+                     
+           
+                    if (distance > chemin.get(chemin.size()-1).getDistance().get(tempSource.get(i).getId())) {
+                        distance = chemin.get(chemin.size()-1).getDistance().get(tempSource.get(i).getId());
+                        
+                        index = i;
+                    } 
+                    
+                    /*
+                     
+                    if(nSortant < sortant.get(tempSource.get(i)).size()) {
+                        nSortant = sortant.get(tempSource.get(i)).size();
+                        index = i;
+                    }
+                    */
+                }
+                
+            }
+
+            Sommet s = tempSource.remove(index);
+    
+               
+          
+            
             for(Sommet v : sortant.get(s)) {
                 degreeEntrant.put(v,degreeEntrant.get(v) -1);
                 if (degreeEntrant.get(v) == 0) {
                     tempSource.add(v);
                 }
             }
+            
             chemin.add(s);
+            
         }
+    
 
 
         return chemin;
     }
+
+
 
     public String toString() {
         String str = "Voisin Sortant" + sortant+"\nVoisin Entrant"+ entrant+"\nSource : "+source;
