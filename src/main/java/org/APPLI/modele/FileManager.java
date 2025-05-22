@@ -58,6 +58,8 @@ public class FileManager {
             membres.get(line[1]).add(line[0]);
 
         }
+
+        scanner.close();
         return membres;
     }
 
@@ -75,6 +77,7 @@ public class FileManager {
             String[] line = scanner.nextLine().split(" ");
             exp.put(line[0], i++);
         }
+        scanner.close();
 
         return exp;
     }
@@ -94,6 +97,8 @@ public class FileManager {
             String[] line = scanner.nextLine().split(" ");
             res.put(i++, line[0]);
         }
+        scanner.close();
+
         return res;
     }
 
@@ -137,6 +142,8 @@ public class FileManager {
             }
             res.get(livSommet).add(recSommet);
         }
+
+        scanner.close();
         return res;
     }
 

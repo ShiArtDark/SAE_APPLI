@@ -11,12 +11,12 @@ public class Main {
     public static void main(String[] args) {
         try {
 
-            TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph("scenario_8.txt");
+            TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph("scenario_0.txt");
             Graphe graphe = new Graphe(map);
             ArrayList<Sommet> chemin = graphe.triTopologique();
             System.out.println(graphe.getEntrant());
           
-            //System.out.println(chemin);
+            System.out.println(chemin);
             System.out.println(graphe.GetDistance(chemin));
         
         } catch (Exception e) {

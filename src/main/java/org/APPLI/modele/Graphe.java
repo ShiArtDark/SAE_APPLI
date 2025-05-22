@@ -9,9 +9,9 @@ import java.util.TreeSet;
 public class Graphe {
     // On va passer par des identifiants de villes 
 
-    private TreeMap<Sommet, TreeSet<Sommet>> sortant;
-    private TreeMap<Sommet, Integer> entrant;
-    private LinkedList<Sommet> source;
+    private final TreeMap<Sommet, TreeSet<Sommet>> sortant;
+    private final TreeMap<Sommet, Integer> entrant;
+    private final LinkedList<Sommet> source;
 
     // ======================== CONSTRUCTEUR ========================
 
@@ -79,33 +79,19 @@ public class Graphe {
             
             if (chemin.size() > 1 ) {
                 int distance = chemin.get(chemin.size()-1).getDistance().get(tempSource.get(0).getId());
-                int nSortant = 0;
                 for (int i = 1; i < tempSource.size()-2; i++) {
                     
-                     
-           
                     if (distance > chemin.get(chemin.size()-1).getDistance().get(tempSource.get(i).getId())) {
                         distance = chemin.get(chemin.size()-1).getDistance().get(tempSource.get(i).getId());
                         
                         index = i;
                     } 
-                    
-                    /*
-                     
-                    if(nSortant < sortant.get(tempSource.get(i)).size()) {
-                        nSortant = sortant.get(tempSource.get(i)).size();
-                        index = i;
-                    }
-                    */
                 }
                 
             }
 
             Sommet s = tempSource.remove(index);
     
-               
-          
-            
             for(Sommet v : sortant.get(s)) {
                 degreeEntrant.put(v,degreeEntrant.get(v) -1);
                 if (degreeEntrant.get(v) == 0) {
@@ -116,17 +102,13 @@ public class Graphe {
             chemin.add(s);
             
         }
-    
-
-
         return chemin;
     }
 
 
-
+    @Override
     public String toString() {
         String str = "Voisin Sortant" + sortant+"\nVoisin Entrant"+ entrant+"\nSource : "+source;
-
         return str;
     }
 
