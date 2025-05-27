@@ -103,8 +103,12 @@ public class Sommet {
         return 0;
     }
 
+    public boolean  isVelizyEnd() {
+        return name.compareTo("Velizy") == 0 && pass == 1;
+    }
+
     public String toString() {
-        return "["+name+" :"+pass+"]";
+        return name+((pass == 0)?"+" : "-");
     }
 
     
