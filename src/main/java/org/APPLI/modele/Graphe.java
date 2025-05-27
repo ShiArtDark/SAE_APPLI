@@ -37,8 +37,8 @@ public class Graphe {
 
             for (Sommet voisin : _tab.get(som)) {
                 tempSet.add(voisin);
-                entrant.put(voisin, entrant.get(som)+1);
-
+                entrant.put(voisin, entrant.get(voisin)+1);
+                
             }
             sortant.put(som, tempSet);
         }
@@ -160,7 +160,12 @@ public class Graphe {
             Sommet s = _source.remove(0);
 
             for (Sommet v : sortant.get(s)) {
-                _entrant.put(v,_entrant.get(v)-1);
+
+                // ancien degré
+                int ancien = _entrant.get(s);
+                // nouveau degré décremente
+
+                _entrant.put(v, _entrant.get(v)-1);
                 if(_entrant.get(v) == 0) {
                     _source.add(v);
                 }
@@ -225,7 +230,7 @@ public class Graphe {
                 }
             }
         } 
-        System.out.println(index);
+        
         return index;
     }
 
