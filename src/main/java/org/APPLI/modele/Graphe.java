@@ -1,3 +1,4 @@
+
 package org.APPLI.modele;
 
 import java.io.IOException;
@@ -30,23 +31,24 @@ public class Graphe {
         for (Sommet som : _tab.keySet()) {
             entrant.put(som, 0);
         }
-    
+
         for (Sommet som : _tab.keySet()) {
             TreeSet<Sommet> tempSet = new TreeSet<>(Sommet::compareTo);
 
             for (Sommet voisin : _tab.get(som)) {
                 tempSet.add(voisin);
                 entrant.put(voisin, entrant.get(som)+1);
-                
+
             }
             sortant.put(som, tempSet);
         }
-        
+
         for (Sommet som : entrant.keySet()) {
             if(entrant.get(som) == 0) {
                 source.add(som);
             }
         }
+
     }
 
     // ======================== GET/SET ========================
@@ -64,8 +66,8 @@ public class Graphe {
     }
 
     // ======================== Method ========================
-    
 
+    
     /**
      * La méthode du tri topologique ou l'algorithme de Bellman-Ford-Moore, consiste à modéliser sous forme de graphe
      * orienté sans cycle, un chemin à partir de source.
@@ -253,6 +255,7 @@ public class Graphe {
         
     }
 
+
     @Override
     public String toString() {
         String str = "Voisin Sortant" + sortant+"\nVoisin Entrant"+ entrant+"\nSource : "+source;
@@ -282,4 +285,5 @@ public class Graphe {
     }
 
     
+
 }
