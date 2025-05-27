@@ -10,7 +10,7 @@ import org.APPLI.modele.Sommet;
 public class Main {
     public static void main(String[] args) {
         try {
-            /*
+            
              
             for (int i =0 ; i < 9; i++) {
                 String scenario = "scenario_"+i+".txt";
@@ -28,8 +28,8 @@ public class Main {
                 
                 // System.out.println(graphe.topologogiqueRecursif(graphe.getEntrant(), graphe.getSource() ,new ArrayList<>()));
             }
-            */
-            String scenario = "scenario_"+3+".txt";
+            
+            String scenario = "scenario_"+0+".txt";
             TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph(scenario);
             Graphe graphe = new Graphe(map);
             System.out.println((graphe.triTopologiqueRecursif())+"\n");

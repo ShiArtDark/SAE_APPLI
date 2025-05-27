@@ -223,6 +223,7 @@ public class Graphe {
                 }
             }
         } 
+        System.out.println(index);
         return index;
     }
 
