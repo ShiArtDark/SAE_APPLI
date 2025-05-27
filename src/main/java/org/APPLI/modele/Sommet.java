@@ -32,6 +32,20 @@ public class Sommet {
     }
 
 
+    public Sommet(String _name, int _pass, ArrayList<Integer> _distance) {
+        name = _name;
+        pass = _pass;
+        distance = _distance;
+    }   
+    public Sommet(String _name, int _pass, ArrayList<Integer> _distance, TreeMap<String, Integer> _idVille) {
+        name = _name;
+        pass = _pass;
+        distance = _distance;
+        villeID = _idVille;
+        id = villeID.get(name);
+    }   
+
+ 
 
     public Sommet(String _name, int _pass) {
         name = _name;
@@ -69,11 +83,7 @@ public class Sommet {
         return distance;
     }
 
-    // =================== Method =============================
-    /**
-     * Cette méthode permet de déterminer si le nom du sommet est le même ou non
-     * @return boolean true si c'est le cas, false au contraire
-     */
+
     public int compareToName(Sommet _sommet) {
         int comp =getName().compareTo(_sommet.getName());
         if(comp > 0) {
@@ -108,4 +118,3 @@ public class Sommet {
     }
 
 
-}
