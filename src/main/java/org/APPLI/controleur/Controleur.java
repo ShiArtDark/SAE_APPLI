@@ -4,10 +4,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import org.APPLI.modele.Sommet;
+import org.APPLI.vue.HBoxRoot;
 
 import java.util.ArrayList;
 
-public class Controleur extends HBox {
+public class Controleur extends HBoxRoot {
     /* 
      
     private VilleListView villeListView;
