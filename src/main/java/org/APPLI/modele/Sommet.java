@@ -23,6 +23,7 @@ public class Sommet {
         pass = _pass;
         distance = _distance;
     }
+
     public Sommet(String _name, int _pass, ArrayList<Integer> _distance, TreeMap<String, Integer> _idVille) {
         name = _name;
         pass = _pass;
@@ -31,27 +32,11 @@ public class Sommet {
         id = villeID.get(name);
     }
 
-
-    public Sommet(String _name, int _pass, ArrayList<Integer> _distance) {
-        name = _name;
-        pass = _pass;
-        distance = _distance;
-    }   
-    public Sommet(String _name, int _pass, ArrayList<Integer> _distance, TreeMap<String, Integer> _idVille) {
-        name = _name;
-        pass = _pass;
-        distance = _distance;
-        villeID = _idVille;
-        id = villeID.get(name);
-    }   
-
- 
 
     public Sommet(String _name, int _pass) {
         name = _name;
         pass = _pass;
     }
-
 
 
     // =================== Get/Set ==========================
@@ -85,10 +70,10 @@ public class Sommet {
 
 
     public int compareToName(Sommet _sommet) {
-        int comp =getName().compareTo(_sommet.getName());
-        if(comp > 0) {
+        int comp = getName().compareTo(_sommet.getName());
+        if (comp > 0) {
             return 1;
-        } else if (comp < 0){
+        } else if (comp < 0) {
             return -1;
         }
 
@@ -97,14 +82,11 @@ public class Sommet {
 
     public int compareTo(Sommet _sommet) {
         int comp = name.compareTo(_sommet.getName());
-        if(comp > 0) {
+        if (comp > 0) {
             return 1;
-        } else if(comp < 0) {
+        } else if (comp < 0) {
             return -1;
-        }
-
-
-        else if (pass <_sommet.getPass()) {
+        } else if (pass < _sommet.getPass()) {
             return -1;
         } else if (pass > _sommet.getPass()) {
             return 1;
@@ -113,8 +95,9 @@ public class Sommet {
         return 0;
     }
 
-    public String toString() {
-        return "["+name+" :"+pass+"]";
-    }
 
+    public String toString() {
+        return "[" + name + " :" + pass + "]";
+    }
+}
 

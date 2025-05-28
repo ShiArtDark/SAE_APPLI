@@ -4,6 +4,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import org.APPLI.modele.Sommet;
+import org.APPLI.vue.DistanceView;
+import org.APPLI.vue.ScenarioSelector;
+import org.APPLI.vue.VilleListView;
 
 import java.util.ArrayList;
 

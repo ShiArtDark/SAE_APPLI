@@ -3,11 +3,10 @@ package org.APPLI.modele;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class FileManager {
 
@@ -18,7 +17,9 @@ public class FileManager {
      * @throws IOException
      */
     public static TreeMap<String, ArrayList<Integer>> exportVille() throws IOException {
-        TreeMap<String, ArrayList<Integer>> distances = new TreeMap<String, ArrayList<Integer>>();
+
+        TreeMap<String, ArrayList<Integer>> distances = new TreeMap<>();
+
 
         File file = new File("ressources/data/distances.txt");
         Scanner scanner = new Scanner(file, "UTF-8");
@@ -45,7 +46,8 @@ public class FileManager {
      * @throws IOException
      */
     public static TreeMap<String, ArrayList<String>> exportMembre()  throws IOException{
-        TreeMap<String, ArrayList<String>> membres = new TreeMap<String, ArrayList<String>>();
+
+        TreeMap<String, ArrayList<String>> membres = new TreeMap<>();
 
         File file = new File("ressources/data/membres_APPLI.txt");
         Scanner scanner = new Scanner(file, "UTF-8");
@@ -62,6 +64,28 @@ public class FileManager {
 
         scanner.close();
         return membres;
+    }
+
+    public static TreeSet<String> exportAllMember(String _scenario) throws IOException {
+        TreeSet<String> res = new TreeSet<>();
+
+        File file = new File("ressources/scenario/"+_scenario);
+        Scanner scanner = new Scanner(file, "UTF-8");
+
+        while (scanner.hasNextLine()) {
+            String[] line = scanner.nextLine().split(" -> ");
+
+            if (!res.contains(line[0])) {
+                res.add(line[0]);
+            }
+
+            if (!res.contains(line[1])) {
+                res.add(line[1]);
+            }
+        }
+        scanner.close();
+
+        return res;
     }
 
     /**
@@ -115,9 +139,9 @@ public class FileManager {
         Scanner scanner = new Scanner(file, "UTF-8");
 
         Sommet velPlus = new Sommet("Velizy", 0, distance.get("Velizy"), exportVilleID());
-        Sommet velMoins = new Sommet("Velizy", 1, distance.get("Velizy"));
+        Sommet velMoins = new Sommet("Velizy", 1, distance.get("Velizy"), exportVilleID());
 
-        res.put(velPlus, new ArrayList<>()); 
+        res.put(velPlus, new ArrayList<>());
         res.put(velMoins, new ArrayList<>());
 
 
@@ -159,6 +183,17 @@ public class FileManager {
             }
         }
         throw new Exception("City Not Found");
+    }
+
+    public static Scenario getScenario(String _path) throws Exception{
+        TreeMap<String, ArrayList<Integer>> distances = exportVille();
+        TreeMap<String, ArrayList<String>> membre = exportMembre();
+        TreeSet<String> allMember = exportAllMember(_path);
+        TreeMap<String, Integer> villeID = exportVilleID();
+        TreeMap<Integer, String> IDVille = exportIDVille();
+        TreeMap<Sommet, ArrayList<Sommet>> map = toGraph(_path);
+
+        return new Scenario();
     }
 
 
