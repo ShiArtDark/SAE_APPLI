@@ -12,8 +12,7 @@ public class Graphe {
     private final TreeMap<Sommet, TreeSet<Sommet>> sortant;
     private final TreeMap<Sommet, Integer> entrant;
     private final LinkedList<Sommet> source;
-    private ArrayList<ArrayList<Sommet>> cheminRecursif;
-    private ArrayList<Integer> indexRecursif;
+    private TreeMap<Integer,ArrayList<ArrayList<Sommet>>> cheminRecursif;
     private final int minTheorical;
     private final int maxTheorical;
     private final float averageTheorical;
@@ -37,8 +36,8 @@ public class Graphe {
         sortant = new TreeMap<>(Sommet::compareTo);
         entrant = new TreeMap<>(Sommet::compareTo);
         source = new LinkedList<>();
-        cheminRecursif = new ArrayList<>();
-        indexRecursif = new ArrayList<>();
+        cheminRecursif = new TreeMap<>();
+   
 
         distances = FileManager.exportVille();
         villeID = FileManager.exportVilleID();
@@ -53,7 +52,7 @@ public class Graphe {
 
             for (Sommet voisin : _tab.get(som)) {
                 tempSet.add(voisin);
-                entrant.put(voisin, entrant.get(som)+1);
+                entrant.put(voisin, entrant.get(voisin)+1);
 
             }
             sortant.put(som, tempSet);
@@ -146,33 +145,22 @@ public class Graphe {
         return triTopologique(FIRST);
     }
 
-    public TreeMap<Integer, ArrayList<Integer>> triTopologiqueRecursif() throws Exception{
+    public TreeMap<Integer, ArrayList<ArrayList<Sommet>>> triTopologiqueRecursif() throws Exception{
 
         TreeMap<Sommet,Integer> degEntrant = new TreeMap<>(entrant);
         LinkedList<Sommet> tempSource =  new LinkedList<>(source);
-        ArrayList<ArrayList<Sommet>> allPath = new ArrayList<>();
         TreeMap<Integer, ArrayList<Integer>> indexDict = new TreeMap<>(); // Clé Distance Résultante et valeur les index
         
         allTopologogiqueRecursif(degEntrant, tempSource, new ArrayList<>());
 
-        for(int i = 0; i<cheminRecursif.size(); i++) {
-            int tmpDistance = GetDistance(cheminRecursif.get(i));
-            if (!indexDict.containsKey(tmpDistance)) {
-                indexDict.put(GetDistance(cheminRecursif.get(i)), new ArrayList<>());
-            }
-            
-            ArrayList<Integer> tmpIndex = indexDict.get(tmpDistance);
-            tmpIndex.add(i);
-            indexDict.put(tmpDistance, tmpIndex);
+        for (int i = 0; i<cheminRecursif.size();i++) {
+            indexDict.put(i, new ArrayList<>());
         }
-
-        int key = indexDict.firstKey();
-        for (int j :indexDict.get(key)) {
-            System.out.println(cheminRecursif.get(j));
-        }
+        
+        
 
     
-        return indexDict;
+        return cheminRecursif;
     }
 
     private boolean isSame(ArrayList<Sommet> _chemin, ArrayList<Sommet> _chemin2) {
@@ -220,13 +208,28 @@ public class Graphe {
     }
 
     private void allTopologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
-        if (_chemin == null || GetDistance(_chemin)>(averageTheorical)) {
+        if (GetDistance(_chemin)>(averageTheorical)) {
             return ;
         }
 
         if(_source.isEmpty()) {
             if (pathIsValid(_chemin)) {
-                cheminRecursif.add(_chemin);
+                int dist = GetDistance(_chemin);
+
+                if (!cheminRecursif.containsKey(dist)) {
+                    cheminRecursif.put(dist, new ArrayList<>());
+                }
+
+                
+                ArrayList<ArrayList<Sommet>> tmpChemins = cheminRecursif.get(dist);
+                for (ArrayList<Sommet> chem : tmpChemins) {
+                    if (isSame(_chemin, chem)) {
+                        return;
+                    }
+                }
+                tmpChemins.add(_chemin);
+                cheminRecursif.put(dist, tmpChemins);
+                
             }
 
         } else {

@@ -1,19 +1,12 @@
 package org.APPLI;
 
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.io.File;
-
-import java.util.ArrayList;
-import java.util.TreeMap;
-
-import org.APPLI.modele.FileManager;
-import org.APPLI.modele.Graphe;
-import org.APPLI.modele.Sommet;
 
 
 public class Main extends Application {
