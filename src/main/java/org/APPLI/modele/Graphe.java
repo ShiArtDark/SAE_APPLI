@@ -1,7 +1,6 @@
 
 package org.APPLI.modele;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -14,19 +13,36 @@ public class Graphe {
     private final TreeMap<Sommet, Integer> entrant;
     private final LinkedList<Sommet> source;
     private ArrayList<ArrayList<Sommet>> cheminRecursif;
+    private ArrayList<Integer> indexRecursif;
+    private final int minTheorical;
+    private final int maxTheorical;
+    private final float averageTheorical;
 
+    private TreeMap<String, ArrayList<Integer>> distances;
+    private TreeMap<String, Integer> villeID;
+    private TreeMap<Integer, String> IDville;
+
+
+
+    
     public static final int FIRST = 0;
     public static final int DISTANCE = 1;
     public static final int DEGREE = 2;
+    public static final int MAX_DISTANCE = 3;
 
 
     // ======================== CONSTRUCTEUR ========================
 
-    public Graphe (TreeMap<Sommet, ArrayList<Sommet>> _tab) {
+    public Graphe (TreeMap<Sommet, ArrayList<Sommet>> _tab) throws Exception{
         sortant = new TreeMap<>(Sommet::compareTo);
         entrant = new TreeMap<>(Sommet::compareTo);
         source = new LinkedList<>();
         cheminRecursif = new ArrayList<>();
+        indexRecursif = new ArrayList<>();
+
+        distances = FileManager.exportVille();
+        villeID = FileManager.exportVilleID();
+
 
         for (Sommet som : _tab.keySet()) {
             entrant.put(som, 0);
@@ -37,8 +53,8 @@ public class Graphe {
 
             for (Sommet voisin : _tab.get(som)) {
                 tempSet.add(voisin);
-                entrant.put(voisin, entrant.get(voisin)+1);
-                
+                entrant.put(voisin, entrant.get(som)+1);
+
             }
             sortant.put(som, tempSet);
         }
@@ -48,7 +64,9 @@ public class Graphe {
                 source.add(som);
             }
         }
-
+        minTheorical = GetDistance(triTopologique(DISTANCE));
+        maxTheorical = GetDistance(triTopologique(MAX_DISTANCE));
+        averageTheorical = (minTheorical+maxTheorical)/2;
     }
 
     // ======================== GET/SET ========================
@@ -65,6 +83,10 @@ public class Graphe {
         return source;
     }
 
+    public int getAllSolutionsSize() {
+        return cheminRecursif.size();
+    }
+
     // ======================== Method ========================
 
     
@@ -77,8 +99,8 @@ public class Graphe {
      */
     public ArrayList<Sommet> triTopologique(int _option) throws Exception {
 
-        TreeMap<Sommet, Integer> degreeEntrant = (TreeMap<Sommet, Integer>) entrant.clone();
-        LinkedList<Sommet> tempSource = (LinkedList<Sommet>) source.clone();
+        TreeMap<Sommet, Integer> degreeEntrant = new TreeMap<>(entrant);
+        LinkedList<Sommet> tempSource = new LinkedList<>(source);
         ArrayList<Sommet> chemin = new ArrayList<>();
       
         while (!tempSource.isEmpty()) {
@@ -95,9 +117,14 @@ public class Graphe {
                 case 2: // MaxDegree
                     index = getMaxIndexEntrant(chemin, tempSource, degreeEntrant);
                     break;
+                case 3: // MaxDistance (Utile pour plus tard... ce n'est pas très heuristique)
+                    index = getMaxIndexDistance(chemin, tempSource); 
+                    break;
+                
             }
 
             Sommet s = tempSource.remove(index);
+           
     
             for(Sommet v : sortant.get(s)) {
                 degreeEntrant.put(v,degreeEntrant.get(v) -1);
@@ -119,36 +146,56 @@ public class Graphe {
         return triTopologique(FIRST);
     }
 
-    public ArrayList<ArrayList<Sommet>> triTopologiqueRecursif(
-        ) {
+    public TreeMap<Integer, ArrayList<Integer>> triTopologiqueRecursif() throws Exception{
 
         TreeMap<Sommet,Integer> degEntrant = new TreeMap<>(entrant);
         LinkedList<Sommet> tempSource =  new LinkedList<>(source);
         ArrayList<ArrayList<Sommet>> allPath = new ArrayList<>();
+        TreeMap<Integer, ArrayList<Integer>> indexDict = new TreeMap<>(); // Clé Distance Résultante et valeur les index
         
-        topologogiqueRecursif(degEntrant, tempSource, new ArrayList<>(), allPath);
+        allTopologogiqueRecursif(degEntrant, tempSource, new ArrayList<>());
 
-        for(int i = 0; i<cheminRecursif.size()-1;i++) {
-            if (pathIsValid(cheminRecursif.get(i))) {
-
-                allPath.add(cheminRecursif.get(i));
+        for(int i = 0; i<cheminRecursif.size(); i++) {
+            int tmpDistance = GetDistance(cheminRecursif.get(i));
+            if (!indexDict.containsKey(tmpDistance)) {
+                indexDict.put(GetDistance(cheminRecursif.get(i)), new ArrayList<>());
             }
+            
+            ArrayList<Integer> tmpIndex = indexDict.get(tmpDistance);
+            tmpIndex.add(i);
+            indexDict.put(tmpDistance, tmpIndex);
         }
-        
-        return allPath;
+
+        int key = indexDict.firstKey();
+        for (int j :indexDict.get(key)) {
+            System.out.println(cheminRecursif.get(j));
+        }
+
+    
+        return indexDict;
     }
+
+    private boolean isSame(ArrayList<Sommet> _chemin, ArrayList<Sommet> _chemin2) {
+        if (_chemin.size() != _chemin2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < _chemin.size(); i++ ) {
+            if(_chemin.get(i).getId() != _chemin2.get(i).getId()) {
+                return false;
+            }
+        } 
+        return true;
+    }
+
+    
 
     private boolean pathIsValid(ArrayList<Sommet> _path) {
         if(_path.get(0).getName().compareTo("Velizy") != 0 || _path.get(_path.size()-1).getName().compareTo("Velizy") != 0) {
             return false;
         }
 
-        for(Sommet som : sortant.keySet()) {
-            if (!_path.contains(som)) {
-                return false;
-            }
-        }
-
+        
         return true;
     }
 
@@ -161,10 +208,6 @@ public class Graphe {
 
             for (Sommet v : sortant.get(s)) {
 
-                // ancien degré
-                int ancien = _entrant.get(s);
-                // nouveau degré décremente
-
                 _entrant.put(v, _entrant.get(v)-1);
                 if(_entrant.get(v) == 0) {
                     _source.add(v);
@@ -176,13 +219,19 @@ public class Graphe {
         return topologogiqueRecursif(_entrant, _source, _chemin);
     }
 
-    private void topologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin, ArrayList<ArrayList<Sommet>> _allPath) {
+    private void allTopologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
+        if (_chemin == null || GetDistance(_chemin)>(averageTheorical)) {
+            return ;
+        }
+
         if(_source.isEmpty()) {
             if (pathIsValid(_chemin)) {
                 cheminRecursif.add(_chemin);
             }
 
         } else {
+
+            
             for (int i = 0; i < _source.size(); i++) {
                 TreeMap<Sommet,Integer> tmpEntrant = new TreeMap<>(_entrant);
                 LinkedList<Sommet> tmpSource = new LinkedList<>(_source);
@@ -197,16 +246,15 @@ public class Graphe {
                     }
                 }
                 
-                tmpChemin.add(s);
-
                 
-                topologogiqueRecursif(tmpEntrant, tmpSource, tmpChemin, _allPath);
+                tmpChemin.add(s);
+                
+                allTopologogiqueRecursif(tmpEntrant, tmpSource, tmpChemin);
+                
             }
         }
         
-        
-        
-    }
+    } 
 
 
     
@@ -218,19 +266,20 @@ public class Graphe {
      */
     private int getMinIndexDistance(ArrayList<Sommet> _chemin, LinkedList<Sommet> _source ) {
         int index = 0;
-        if (_chemin.size() >= 1) {
+        if (_source.size()>1) {
             Sommet last = _chemin.get(_chemin.size()-1);
             int distance = last.getDistance().get(_source.get(0).getId());
+
             
             for (int i = 1; i < _source.size();i++) {
-                Sommet current = _source.get(i);
-                if(distance > last.getDistance().get(current.getId())) {
-                    distance = last.getDistance().get(current.getId());
+                int current = _source.get(i).getId();
+                if(distance > last.getDistance().get(current)) {
+                    distance = last.getDistance().get(current);
                     index = i;
                 }
             }
         } 
-        
+        // System.out.println(_source.get(index));
         return index;
     }
 
@@ -260,6 +309,25 @@ public class Graphe {
         
     }
 
+    private int getMaxIndexDistance(ArrayList<Sommet> _chemin, LinkedList<Sommet> _source ) {
+        int index = 0;
+        if (_source.size()>1) {
+            Sommet last = _chemin.get(_chemin.size()-1);
+            int distance = last.getDistance().get(_source.get(0).getId());
+
+            
+            for (int i = 1; i < _source.size();i++) {
+                int current = _source.get(i).getId();
+                if(distance < last.getDistance().get(current)) {
+                    distance = last.getDistance().get(current);
+                    index = i;
+                }
+            }
+        } 
+        // System.out.println(_source.get(index));
+        return index;
+    }
+
 
     @Override
     public String toString() {
@@ -271,23 +339,23 @@ public class Graphe {
      * Cette méthode permet d'obtenir la distance totale à partir d'un chemin
      * @param _chemin une liste de sommmet
      * @return un entier correspondant à la distance à parcourir/parcouru
-     * @throws IOException
      */
-    public int GetDistance(ArrayList<Sommet> _chemin) throws IOException {
-        TreeMap<String, ArrayList<Integer>> distance = FileManager.exportVille();
-        TreeMap<String, Integer> villeID = FileManager.exportVilleID();
-        
+    public int GetDistance(ArrayList<Sommet> _chemin)   {
+
         int res = 0;
         
         for (int i = 1; i < _chemin.size(); i++) {
             String last = _chemin.get(i).getName();
             String current = _chemin.get(i-1).getName();
             
-            res += distance.get(last).get(villeID.get(current));
+            res += distances.get(last).get(villeID.get(current));
         }
         
         return res;
     }
+
+
+    
 
     
 
