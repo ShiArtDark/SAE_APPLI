@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Scenario {
-    private String name;
+    private final String name;
     private final TreeMap<String, ArrayList<Integer>> distances;
     private final TreeMap<String, ArrayList<String>> membre;
     private final TreeSet<String> allMember;
@@ -34,6 +34,10 @@ public class Scenario {
         map = _map;
 
 
+    }
+    
+    public String getName() {
+        return name;
     }
 
     public TreeMap<String, ArrayList<Integer>>  getDistance() {

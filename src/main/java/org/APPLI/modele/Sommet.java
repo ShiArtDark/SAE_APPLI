@@ -105,7 +105,8 @@ public class Sommet {
     public boolean  isVelizyEnd() {
         return name.compareTo("Velizy") == 0 && pass == 1;
     }
-
+    
+    @Override
     public String toString() {
         return name+((pass == 0)?"+" : "-");
     }
