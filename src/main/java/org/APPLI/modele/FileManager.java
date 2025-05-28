@@ -193,7 +193,7 @@ public class FileManager {
         TreeMap<Integer, String> IDVille = exportIDVille();
         TreeMap<Sommet, ArrayList<Sommet>> map = toGraph(_path);
 
-        return new Scenario(_path);
+        return new Scenario(_path, distances, membre, allMember, villeID, IDVille, map);
     }
 
 

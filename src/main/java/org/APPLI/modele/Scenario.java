@@ -14,7 +14,16 @@ public class Scenario {
     private TreeMap<Sommet, ArrayList<Sommet>> map;
 
     
-    public Scenario() {
-        
+    public Scenario(
+        String _name,
+        TreeMap<String, ArrayList<Integer>> _distance,
+        TreeMap<String, ArrayList<String>>  _membre,
+        TreeSet<String> _allMember,
+        TreeMap<String, Integer> villeID,
+        TreeMap<Integer, String> _IdVille,
+        TreeMap<Sommet, ArrayList<Sommet>> _map
+
+    ) {
+
     }
 }
