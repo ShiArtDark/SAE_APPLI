@@ -185,6 +185,17 @@ public class FileManager {
         throw new Exception("City Not Found");
     }
 
+    public static Scenario getScenario(String _path) throws Exception{
+        TreeMap<String, ArrayList<Integer>> distances = exportVille();
+        TreeMap<String, ArrayList<String>> membre = exportMembre();
+        TreeSet<String> allMember = exportAllMember(_path);
+        TreeMap<String, Integer> villeID = exportVilleID();
+        TreeMap<Integer, String> IDVille = exportIDVille();
+        TreeMap<Sommet, ArrayList<Sommet>> map = toGraph(_path);
+
+        return new Scenario(_path);
+    }
+
 
 
 }
