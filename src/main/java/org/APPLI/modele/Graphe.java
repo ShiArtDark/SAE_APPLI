@@ -20,6 +20,7 @@ public class Graphe {
     private TreeMap<String, ArrayList<Integer>> distances;
     private TreeMap<String, Integer> villeID;
     private TreeMap<Integer, String> IDville;
+    private int n = 0;
 
 
 
@@ -199,7 +200,7 @@ public class Graphe {
     }
 
     public ArrayList<Sommet> topologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
-
+        
         if(_source.isEmpty()) {
             return _chemin;
         } else {
