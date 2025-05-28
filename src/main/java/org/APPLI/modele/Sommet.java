@@ -111,7 +111,9 @@ public class Sommet {
         return name+((pass == 0)?"+" : "-");
     }
 
-    
+    public int getDistanceFrom(Sommet _sommet) {
+        return distance.get(_sommet.getId());
+    }
 }
 
 /*
