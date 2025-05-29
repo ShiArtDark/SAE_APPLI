@@ -2,6 +2,7 @@
 package org.APPLI.modele;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -20,9 +21,7 @@ public class Graphe {
     private TreeMap<String, ArrayList<Integer>> distances;
     private TreeMap<String, Integer> villeID;
     private TreeMap<Integer, String> IDville;
-
-
-
+    private int n =0; // Valeur tampons
     
     public static final int FIRST = 0;
     public static final int DISTANCE = 1;
@@ -84,6 +83,10 @@ public class Graphe {
 
     public int getAllSolutionsSize() {
         return cheminRecursif.size();
+    }
+
+    public TreeMap<Integer, ArrayList<ArrayList<Sommet>>> getAllSolutions() {
+        return cheminRecursif;
     }
 
     // ======================== Method ========================
@@ -149,17 +152,11 @@ public class Graphe {
 
         TreeMap<Sommet,Integer> degEntrant = new TreeMap<>(entrant);
         LinkedList<Sommet> tempSource =  new LinkedList<>(source);
-        TreeMap<Integer, ArrayList<Integer>> indexDict = new TreeMap<>(); // Clé Distance Résultante et valeur les index
-        
-        allTopologogiqueRecursif(degEntrant, tempSource, new ArrayList<>());
+        HashMap<Integer, ArrayList<Sommet>> _allPath = new HashMap<>();
 
-        for (int i = 0; i<cheminRecursif.size();i++) {
-            indexDict.put(i, new ArrayList<>());
-        }
-        
-        
+        //allTopologogiqueRecursif(degEntrant, tempSource, new ArrayList<>());
+        minimax( degEntrant, tempSource, new ArrayList<>());
 
-    
         return cheminRecursif;
     }
 
@@ -176,8 +173,6 @@ public class Graphe {
         return true;
     }
 
-    
-
     private boolean pathIsValid(ArrayList<Sommet> _path) {
         if(_path.get(0).getName().compareTo("Velizy") != 0 || _path.get(_path.size()-1).getName().compareTo("Velizy") != 0) {
             return false;
@@ -187,6 +182,95 @@ public class Graphe {
         return true;
     }
 
+    private boolean isLastSituation(ArrayList<Sommet> _chemin) {
+        if (!_chemin.isEmpty()) {
+
+            Sommet last = _chemin.get(_chemin.size()-1);
+            if (last.getName() == "Velizy" && last.getPass() == 1) {
+                return true;
+            }
+        }
+        return false;
+
+
+    }
+
+    private void insertionSort(LinkedList<Sommet> _source, Sommet _last) {
+        
+        int len = _source.size();
+        for (int i = 1; i < len; i++) {
+            Sommet key = _source.get(i);
+            int j = i -1;
+
+            while (j >= 0 && _last.getDistance().get(_source.get(j).getId()) > _last.getDistance().get(key.getId())) {
+                _source.set(j+1, _source.get(j));
+                j = j -1;
+            }
+            _source.set(j+1, key );
+        }
+
+       
+    }
+
+    public int minimax(
+        TreeMap<Sommet,Integer> _entrant,
+        LinkedList<Sommet> _source,
+        ArrayList<Sommet> _chemin
+
+        ){
+            n++;
+            int dist = GetDistance(_chemin);
+            
+            
+            if (isLastSituation(_chemin) || dist > (averageTheorical*.7)) { // Condition de sortie
+
+                if (isLastSituation(_chemin)) {
+
+                    if (!cheminRecursif.containsKey(dist)) {
+                        cheminRecursif.put(dist, new ArrayList<>());
+                        ArrayList<ArrayList<Sommet>> chemins = cheminRecursif.get(dist);
+                    
+                        for (ArrayList<Sommet> sub : chemins) {
+                            if (isSame(sub, _chemin)) {
+                                return dist;
+                            }
+                        }
+                        chemins.add(_chemin);
+                        cheminRecursif.put(dist, chemins);
+                    }
+                }
+                return dist;
+
+            } else {
+
+                int valeur = Integer.MAX_VALUE;
+                  
+                for (int i = 0; i < _source.size(); i++) {
+                    
+                    TreeMap<Sommet,Integer> tmpEntrant = new TreeMap<>(_entrant);
+                    LinkedList<Sommet> tmpSource = new LinkedList<>(_source);
+                    ArrayList<Sommet> tmpChemin = new ArrayList<>(_chemin);
+                        
+                    Sommet s = tmpSource.remove(i);
+                             
+                    for (Sommet v : sortant.get(s)) {
+                        tmpEntrant.put(v, tmpEntrant.get(v)-1);
+                        if(tmpEntrant.get(v) == 0 ) {
+                            tmpSource.add(v);
+                        }
+                    }
+                    
+                    insertionSort(tmpSource, s);
+                
+                    tmpChemin.add(s);
+                    valeur = Math.min(valeur, minimax( tmpEntrant, tmpSource, tmpChemin ));
+                   
+                }
+                return valeur;   
+            }
+    }
+    
+        
     public ArrayList<Sommet> topologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
 
         if(_source.isEmpty()) {
@@ -208,7 +292,8 @@ public class Graphe {
     }
 
     private void allTopologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
-        if (GetDistance(_chemin)>(averageTheorical)) {
+        n++;
+        if (GetDistance(_chemin)>(averageTheorical) ) {
             return ;
         }
 
@@ -259,8 +344,6 @@ public class Graphe {
         
     } 
 
-
-    
     /**
      * Retourne l'index minimum des sources par rapport au dernier du chemin
      * @param _chemin une ArrayList de chemin
@@ -356,10 +439,7 @@ public class Graphe {
         
         return res;
     }
-
-
-    
-
-    
-
+    public int getIteration() {
+        return n;
+    }
 }
