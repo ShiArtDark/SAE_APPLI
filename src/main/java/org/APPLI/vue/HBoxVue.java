@@ -26,7 +26,7 @@ public class HBoxVue extends HBox {
     public void setScenario(Scenario scenario) {
         System.out.println("HBoxVue reçoit scénario : " + (scenario != null ? scenario.getName() : "null"));
 
-        // Appelle bien toutes les vues :
+
         villeListView.updateWithScenario(scenario);
         distanceView.setScenario(scenario);
         scenarioContentView.afficherScenario(scenario);
