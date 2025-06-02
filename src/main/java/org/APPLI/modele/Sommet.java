@@ -115,6 +115,10 @@ public class Sommet {
         return distance.get(_sommet.getId());
     }
 
+    public String getCode() {
+        return id+"-"+pass;
+    }
+
 }
 
 /*

@@ -22,9 +22,7 @@ public class Scenario {
         TreeMap<String, Integer> _villeID,
         TreeMap<Integer, String> _IdVille,
         Graphe _map
-    ) throws Exception 
-    {
-
+    ){
         name =_name;
         distances =_distance;
         membre= _membre;
@@ -32,7 +30,6 @@ public class Scenario {
         villeID = _villeID;
         IDVille = _IdVille;
         map = _map;
-
 
     }
     

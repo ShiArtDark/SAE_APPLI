@@ -12,7 +12,7 @@ public class ClientGraphe {
              
 
                 int i = 0;
-                for (i = 0; i<9;i++) {
+                for (i = 0; i<8;i++) {
 
                     String scenario = "scenario_"+i+".txt";
                     TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph(scenario);
@@ -27,15 +27,14 @@ public class ClientGraphe {
                     // System.out.println("Scenario DIS"+i+" : "+ graphe.GetDistance(cheminDist));
                    
                     
-                    graphe.triTopologiqueRecursif(5);
-                    TreeMap<Integer, ArrayList<ArrayList<Sommet>>> paths = graphe.getAllSolutions();
-                    int firstKey = paths.firstKey();
                     // System.out.println(graphe.getAllSolutions());
-                    System.out.println("Scenario DIS"+i+" : "+firstKey+" en "+graphe.getIteration()+"\n");
                     // System.out.println("Scenario "+i+"\nChemin :"+graphe.getAllSolutions().size()+"\nOptim ?"+graphe.getAllSolutions().get(graphe.getAllSolutions().firstKey()));
 
-                    System.out.println(graphe.calculeDesSolutions(5));
-                    System.out.println(graphe.convertChemin(graphe.getAllSolutions().get(firstKey).get(0)));
+                    ArrayList<ArrayList<Sommet>> maps = graphe.calculeDesSolutions(5);
+                    for(ArrayList<Sommet> ch : maps) {
+                        System.out.println(graphe.getDistance(ch)+" "+ch);
+                    }
+                    System.out.println("\n\n\n");
                  }
                 
             
