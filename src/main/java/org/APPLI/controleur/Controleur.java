@@ -7,7 +7,7 @@ import org.APPLI.modele.Scenario;
 import org.APPLI.vue.DistanceView;
 import org.APPLI.vue.ScenarioContentView;
 // Remplace par MenuMenuBar si besoin
-import org.APPLI.vue.MenuMenuBar;        // ou ta classe de menu scénario
+import org.APPLI.vue.MenuMenuBar;
 import org.APPLI.vue.VilleListView;
 
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ public class Controleur extends HBox {
 
     private VilleListView villeListView;
     private DistanceView distanceView;
-    private MenuMenuBar menuMenuBar;      // ton menu avec les scénarios
-    private ScenarioContentView scenarioContentView;  // vue pour afficher scénario sélectionné
+    private MenuMenuBar menuMenuBar;
+    private ScenarioContentView scenarioContentView;
 
     public Controleur() {
 
