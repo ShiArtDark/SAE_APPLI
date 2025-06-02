@@ -13,7 +13,7 @@ public class HBoxRoot extends VBox {
         menuMenuBar = new MenuMenuBar();
         hBoxVue = new HBoxVue();
 
-        // Quand on sélectionne un scénario dans le menu, on le donne à la DistanceView dans HBoxVue
+
         menuMenuBar.setScenarioSelectionListener(scenario -> {
             hBoxVue.setScenario(scenario);
         });
