@@ -32,17 +32,22 @@ public class VilleListView extends VBox {
         Map<String, ArrayList<String>> membresParVille = scenario.getMembres();
         if (membresParVille == null || membresParVille.isEmpty()) {
             System.out.println("Aucun membre trouvé dans ce scénario.");
-
             listView.getItems().add("Aucun membre trouvé.");
             return;
         }
 
+        // Récupère uniquement les membres actifs dans ce scénario
+        var membresScenario = scenario.getAllMembre();
+
         for (Map.Entry<String, ArrayList<String>> entry : membresParVille.entrySet()) {
             String ville = entry.getKey();
             for (String membre : entry.getValue()) {
-                String ligne = ville + " -> " + membre;
-                System.out.println("Ajout dans la liste : " + ligne);
-                listView.getItems().add(ligne);
+                // Ajoute uniquement si le membre appartient au scénario
+                if (membresScenario.contains(membre)) {
+                    String ligne = ville + " -> " + membre;
+                    System.out.println("Ajout dans la liste : " + ligne);
+                    listView.getItems().add(ligne);
+                }
             }
         }
 

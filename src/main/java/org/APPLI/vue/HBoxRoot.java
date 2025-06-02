@@ -1,11 +1,13 @@
 package org.APPLI.vue;
 
 import javafx.scene.layout.VBox;
+import org.APPLI.controleur.Controleur;
 import org.APPLI.modele.Scenario;
 
 public class HBoxRoot extends VBox {
     private MenuMenuBar menuMenuBar;
     private HBoxVue hBoxVue;
+
 
     public HBoxRoot() {
         super(10);
@@ -20,4 +22,6 @@ public class HBoxRoot extends VBox {
 
         this.getChildren().addAll(menuMenuBar, hBoxVue);
     }
+
+
 }
