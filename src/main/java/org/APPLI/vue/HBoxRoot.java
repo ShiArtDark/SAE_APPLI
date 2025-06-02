@@ -1,26 +1,23 @@
 package org.APPLI.vue;
 
-import javafx.scene.control.*;
-
 import javafx.scene.layout.VBox;
-import org.APPLI.controleur.Controleur;
-import org.APPLI.vue.DistanceView;
+import org.APPLI.modele.Scenario;
 
 public class HBoxRoot extends VBox {
-    private static Controleur chControleur;
+    private MenuMenuBar menuMenuBar;
+    private HBoxVue hBoxVue;
+
     public HBoxRoot() {
-        super(30);
-        chControleur = new Controleur();
+        super(10);
 
-        MenuMenuBar menuMenuBar = new MenuMenuBar();
+        menuMenuBar = new MenuMenuBar();
+        hBoxVue = new HBoxVue();
 
-        this.getChildren().addAll(menuMenuBar);
+        // Quand on sélectionne un scénario dans le menu, on le donne à la DistanceView dans HBoxVue
+        menuMenuBar.setScenarioSelectionListener(scenario -> {
+            hBoxVue.setScenario(scenario);
+        });
 
-
+        this.getChildren().addAll(menuMenuBar, hBoxVue);
     }
-
-
-    public static Label getScenario() {return new Label("Scenario");}
-    public static Controleur getControleur() {return chControleur;}
-
 }

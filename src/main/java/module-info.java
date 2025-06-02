@@ -4,6 +4,8 @@ module com.example.saejsplusclb {
     requires org.controlsfx.controls;
     requires javatuples;
 
-    opens org.APPLI to javafx.fxml; // ← Important pour FXML
-    exports org.APPLI;              // ← Important pour que JavaFX accède à Main
+    opens org.APPLI to javafx.fxml;        // pour FXML
+    opens org.APPLI.modele to javafx.base; // <-- ajoute cette ligne pour la réflexion JavaFX
+
+    exports org.APPLI;                      // export pour accès public
 }

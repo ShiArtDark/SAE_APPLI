@@ -1,3 +1,4 @@
+
 package org.APPLI.modele;
 
 import java.util.ArrayList;
@@ -33,10 +34,14 @@ public class Sommet {
     }
 
 
+
+
+
     public Sommet(String _name, int _pass) {
         name = _name;
         pass = _pass;
     }
+
 
 
     // =================== Get/Set ==========================
@@ -70,10 +75,10 @@ public class Sommet {
 
 
     public int compareToName(Sommet _sommet) {
-        int comp = getName().compareTo(_sommet.getName());
-        if (comp > 0) {
+        int comp =getName().compareTo(_sommet.getName());
+        if(comp > 0) {
             return 1;
-        } else if (comp < 0) {
+        } else if (comp < 0){
             return -1;
         }
 
@@ -82,11 +87,14 @@ public class Sommet {
 
     public int compareTo(Sommet _sommet) {
         int comp = name.compareTo(_sommet.getName());
-        if (comp > 0) {
+        if(comp > 0) {
             return 1;
-        } else if (comp < 0) {
+        } else if(comp < 0) {
             return -1;
-        } else if (pass < _sommet.getPass()) {
+        }
+
+
+        else if (pass <_sommet.getPass()) {
             return -1;
         } else if (pass > _sommet.getPass()) {
             return 1;
@@ -95,9 +103,49 @@ public class Sommet {
         return 0;
     }
 
-
-    public String toString() {
-        return "[" + name + " :" + pass + "]";
+    public boolean  isVelizyEnd() {
+        return name.compareTo("Velizy") == 0 && pass == 1;
     }
+
+    @Override
+    public String toString() {
+        return name+((pass == 0)?"+" : "-");
+    }
+
+    public int getDistanceFrom(Sommet _sommet) {
+        return distance.get(_sommet.getId());
+    }
+
 }
+
+/*
+ *     try {
+
+
+            // for (int i =0 ; i < 1; i++) {
+                int i = 4;
+                String scenario = "scenario_"+i+".txt";
+                TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph(scenario);
+                Graphe graphe = new Graphe(map);
+                ArrayList<Sommet> chemin = graphe.triTopologique(Graphe.FIRST);
+                ArrayList<Sommet> cheminDist = graphe.triTopologique(Graphe.DISTANCE);
+                ArrayList<Sommet> cheminDegr = graphe.triTopologique(Graphe.DEGREE);
+
+
+                System.out.println("Scenario FIR"+i+" : "+ graphe.GetDistance(chemin));
+                System.out.println("Scenario DIS"+i+" : "+ graphe.GetDistance(cheminDist));
+                System.out.println("Scenario DEG"+i+" : "+ graphe.GetDistance(cheminDegr)+"\n");
+
+
+
+                System.out.println(graphe.triTopologiqueRecursif());
+            // }
+
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+ */
 

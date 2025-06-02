@@ -1,33 +1,34 @@
 package org.APPLI.vue;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import org.APPLI.controleur.Controleur;
+import javafx.scene.layout.VBox;
 import org.APPLI.modele.Scenario;
-import org.APPLI.modele.Sommet;
-
 
 public class HBoxVue extends HBox {
-    private static VilleListView chVilleListView;
-    private static ScenarioSelector chSelector;
-    private static DistanceView chDistanceView;
-    private static Scenario chScenario;
-    private static Sommet chSommet;
+
+    private VilleListView villeListView;
+    private DistanceView distanceView;
+    private ScenarioContentView scenarioContentView;
 
     public HBoxVue() {
+        super(10);
 
-        chSelector = new ScenarioSelector();
-        chDistanceView = new DistanceView();
+        villeListView = new VilleListView();
+        distanceView = new DistanceView();
+        scenarioContentView = new ScenarioContentView();
 
+        VBox leftPane = new VBox(villeListView, distanceView);
+        VBox rightPane = new VBox(scenarioContentView);
 
-
-        //chVilleListView = new VilleListView();
-
-
-        this.getChildren().addAll(chDistanceView,chVilleListView,chSelector);
-
-
+        this.getChildren().addAll(leftPane, rightPane);
     }
 
+    public void setScenario(Scenario scenario) {
+        System.out.println("HBoxVue reçoit scénario : " + (scenario != null ? scenario.getName() : "null"));
 
+        // Appelle bien toutes les vues :
+        villeListView.updateWithScenario(scenario);
+        distanceView.setScenario(scenario);
+        scenarioContentView.afficherScenario(scenario);
+    }
 }
