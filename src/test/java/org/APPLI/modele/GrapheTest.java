@@ -14,11 +14,6 @@ public class GrapheTest {
     }
 
     @Test
-    void testGetSolutionK() {
-
-    }
-
-    @Test
     void testGetSortant() {
 
     }

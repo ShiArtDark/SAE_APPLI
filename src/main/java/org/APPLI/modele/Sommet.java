@@ -32,16 +32,10 @@ public class Sommet {
         id = villeID.get(name);
     }
 
-
-
- 
-
     public Sommet(String _name, int _pass) {
         name = _name;
         pass = _pass;
     }
-
-
 
     // =================== Get/Set ==========================
     public void setName(String _name) {
@@ -102,10 +96,6 @@ public class Sommet {
         return 0;
     }
 
-    public boolean  isVelizyEnd() {
-        return name.compareTo("Velizy") == 0 && pass == 1;
-    }
-    
     @Override
     public String toString() {
         return name+((pass == 0)?"+" : "-");
@@ -126,40 +116,9 @@ public class Sommet {
                 return true;
             }
         }
-
         return false;
        
     }
 
 }
 
-/*
- *     try {
-            
-             
-            // for (int i =0 ; i < 1; i++) {
-                int i = 4;
-                String scenario = "scenario_"+i+".txt";
-                TreeMap<Sommet, ArrayList<Sommet>> map = FileManager.toGraph(scenario);
-                Graphe graphe = new Graphe(map);
-                ArrayList<Sommet> chemin = graphe.triTopologique(Graphe.FIRST);
-                ArrayList<Sommet> cheminDist = graphe.triTopologique(Graphe.DISTANCE);
-                ArrayList<Sommet> cheminDegr = graphe.triTopologique(Graphe.DEGREE);
-             
-          
-                System.out.println("Scenario FIR"+i+" : "+ graphe.GetDistance(chemin));
-                System.out.println("Scenario DIS"+i+" : "+ graphe.GetDistance(cheminDist));
-                System.out.println("Scenario DEG"+i+" : "+ graphe.GetDistance(cheminDegr)+"\n");
-                
-
-                
-                System.out.println(graphe.triTopologiqueRecursif());
-            // }
-            
-           
-        
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
- */

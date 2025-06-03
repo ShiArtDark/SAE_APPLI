@@ -18,10 +18,14 @@ public class ClientGraphe {
                     Graphe graphe = new Graphe(map);
                     
                     
+                    ArrayList<Sommet> chemin = graphe.triTopologique(Graphe.FIRST);
                     ArrayList<Sommet> cheminDist = graphe.triTopologique(Graphe.DISTANCE);
+                    ArrayList<Sommet> cheminDeg = graphe.triTopologique(Graphe.DEGREE);
             
-                    // System.out.println("Scenario FIR"+i+" : "+ graphe.getDistance(chemin)+chemin.size());
-                    System.out.println("Scenario DIS"+i+" : "+ graphe.getDistance(cheminDist) +" "+cheminDist.size() +" "+graphe.getSortant().size());
+            
+                    System.out.println("Scenario FIR"+i+" : "+ graphe.getDistance(chemin));
+                    System.out.println("Scenario DIS"+i+" : "+ graphe.getDistance(cheminDist));
+                    System.out.println("Scenario DIS"+i+" : "+ graphe.getDistance(cheminDeg));
                     
                     // System.out.println(graphe.getAllSolutions());
                     // System.out.println("Scenario "+i+"\nChemin :"+graphe.getAllSolutions().size()+"\nOptim ?"+graphe.getAllSolutions().get(graphe.getAllSolutions().firstKey()));

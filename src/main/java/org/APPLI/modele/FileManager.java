@@ -149,7 +149,7 @@ public class FileManager {
                 if (livVille.compareTo(recVille) != 0) {
                     Sommet livSommet = new Sommet(livVille, 0, distance.get(livVille), villeID); // On crée le sommet correspondant
                     Sommet recSommet = new Sommet(recVille, 1, distance.get(recVille), villeID); // On crée le sommet correspondant
-                    if (res.containsKey(livSommet) && res.get(livSommet).contains(recSommet)){
+                    if (res.containsKey(livSommet) && res.get(livSommet).contains(recSommet)){ // Pour éviter les différents doublons.
                         continue;
                     }
                     
