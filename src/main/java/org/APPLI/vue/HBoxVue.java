@@ -8,27 +8,36 @@ public class HBoxVue extends HBox {
 
     private VilleListView villeListView;
     private DistanceView distanceView;
-    private ScenarioContentView scenarioContentView;
+    private OutputView outputView;
 
     public HBoxVue() {
         super(10);
 
         villeListView = new VilleListView();
         distanceView = new DistanceView();
-        scenarioContentView = new ScenarioContentView();
+        outputView = new OutputView();
 
         VBox leftPane = new VBox(villeListView, distanceView);
-        VBox rightPane = new VBox(scenarioContentView);
+        VBox rightPane = new VBox(outputView);
 
         this.getChildren().addAll(leftPane, rightPane);
     }
 
     public void setScenario(Scenario scenario) {
         System.out.println("HBoxVue reçoit scénario : " + (scenario != null ? scenario.getName() : "null"));
-
-
         villeListView.updateWithScenario(scenario);
         distanceView.setScenario(scenario);
-        scenarioContentView.afficherScenario(scenario);
+    }
+
+    public OutputView getOutputView() {
+        return outputView;
+    }
+
+    public VilleListView getVilleListView() {
+        return villeListView;
+    }
+
+    public DistanceView getDistanceView() {
+        return distanceView;
     }
 }

@@ -1,27 +1,35 @@
 package org.APPLI.vue;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.APPLI.controleur.Controleur;
-import org.APPLI.modele.Scenario;
 
 public class HBoxRoot extends VBox {
-    private MenuMenuBar menuMenuBar;
-    private HBoxVue hBoxVue;
 
+    private Controleur controleur;
 
     public HBoxRoot() {
         super(10);
 
-        menuMenuBar = new MenuMenuBar();
-        hBoxVue = new HBoxVue();
+
+        controleur = new Controleur();
 
 
-        menuMenuBar.setScenarioSelectionListener(scenario -> {
-            hBoxVue.setScenario(scenario);
-        });
+        HBox principale = new HBox(10);
 
-        this.getChildren().addAll(menuMenuBar, hBoxVue);
+
+        VBox leftPane = new VBox(controleur.getVilleListView(), controleur.getDistanceView());
+
+
+        VBox rightPane = new VBox(controleur.getOutputView());
+
+        principale.getChildren().addAll(leftPane, rightPane);
+
+
+        this.getChildren().addAll(controleur.getMenuMenuBar(), principale);
     }
 
-
+    public Controleur getControleur() {
+        return controleur;
+    }
 }
