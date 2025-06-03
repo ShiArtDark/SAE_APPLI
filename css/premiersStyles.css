@@ -1,33 +1,113 @@
+/* ---------- GÉNÉRAL ---------- */
 .root {
-    -fx-background-color: #f0f0f0;
-    -fx-padding: 20;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f5f7fa;
+    -fx-padding: 10;
 }
 
-.label {
+/* ---------- MENU ---------- */
+.menu-bar {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e0e0e0);
+    -fx-padding: 8 16;
+    -fx-border-color: #bdbdbd;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu {
     -fx-text-fill: #2c3e50;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
 
-#opaque {
-    -fx-background-color: white;
-    -fx-padding: 10;
-    -fx-background-radius: 5;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.5, 0, 1);
-}
-
-.toggle-button {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #2c3e50;
-    -fx-border-color: #bdc3c7;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-padding: 8 12;
-    -fx-cursor: hand;
-}
-
-.toggle-button:selected {
-    -fx-background-color: #e74c3c;
+.menu:hover {
+    -fx-background-color: #3498db;
     -fx-text-fill: white;
-    -fx-border-color: #c0392b;
+}
+
+.menu-item,
+.radio-menu-item {
+    -fx-padding: 8 20;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+}
+
+.menu-item:hover,
+.radio-menu-item:hover {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+}
+
+.radio-menu-item:selected {
+    -fx-background-color: #1abc9c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 4;
+    -fx-padding: 5;
+    -fx-font-size: 13px;
+}
+
+.list-cell {
+    -fx-padding: 6 10;
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+
+.text-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+}
+
+
+.hbox, .vbox {
+    -fx-spacing: 10;
+}
+
+
+.button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 6 14;
+    -fx-font-size: 13px;
+}
+
+.button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.button:pressed {
+    -fx-background-color: #1c6ea4;
+}
+
+
+.tooltip {
+    -fx-font-size: 12px;
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: white;
+    -fx-padding: 6;
 }
