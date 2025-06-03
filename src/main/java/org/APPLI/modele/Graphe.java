@@ -617,7 +617,7 @@ public class Graphe {
         return meilleursSolution;
     }
 
-    public ArrayList<String> convertChemin(ArrayList<Sommet> _chemin) {
+    public static ArrayList<String> convertChemin(ArrayList<Sommet> _chemin) {
         ArrayList<String> chemin = new ArrayList<>();
         chemin.add(_chemin.get(0).getName());
 
