@@ -144,26 +144,35 @@ public class FileManager {
                 String[] line = scanner.nextLine().split(" -> ");
                 
                 
-                String livVille = getVilleByMembre(line[0]);
-                Sommet livSommet = new Sommet(livVille, 0, distance.get(livVille), villeID);
-                if (!res.containsKey(livSommet)) {
-                    res.put(livSommet, new ArrayList<>());
-                    ArrayList<Sommet> veliz = res.get(velPlus);
-                    veliz.add(livSommet);
-                    res.put(velPlus, veliz);
+                String livVille = getVilleByMembre(line[0]); // On extrait le nom de la ville livrante
+                String recVille = getVilleByMembre(line[1]); // On extrait le nom de la ville recevante
+                if (livVille.compareTo(recVille) != 0) {
+                    Sommet livSommet = new Sommet(livVille, 0, distance.get(livVille), villeID); // On crée le sommet correspondant
+                    Sommet recSommet = new Sommet(recVille, 1, distance.get(recVille), villeID); // On crée le sommet correspondant
+                    if (res.containsKey(livSommet) && res.get(livSommet).contains(recSommet)){
+                        continue;
+                    }
                     
-                }
+                    if (!res.containsKey(livSommet)) { // Si elle n'est pas existante on crée ce nouveau sommet
+                        res.put(livSommet, new ArrayList<>());
+                        ArrayList<Sommet> veliz = res.get(velPlus);
+                        veliz.add(livSommet);
+                        res.put(velPlus, veliz);    
+                        
+                    }
                 
-                String recVille = getVilleByMembre(line[1]);
-                Sommet recSommet = new Sommet(recVille, 1, distance.get(recVille), villeID);
-                if (!res.containsKey(recSommet)) {
-                    ArrayList<Sommet> tempRec = new ArrayList<>();
-                    tempRec.add(velMoins);
+                
                     
-                    res.put(recSommet, tempRec);
+                    
+                    if (!res.containsKey(recSommet)) { // Si il n'existe pas, on crée une nouvelle entrée
+                        ArrayList<Sommet> tempRec = new ArrayList<>();
+                        tempRec.add(velMoins);
+                        res.put(recSommet, tempRec);
+                    }
+                    res.get(livSommet).add(recSommet);
+                
                 }
-                res.get(livSommet).add(recSommet);
-            }
+            }   
         }
         return res;
     }

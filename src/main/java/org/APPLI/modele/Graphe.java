@@ -110,8 +110,8 @@ public class Graphe {
         LinkedList<Sommet> tempSource = new LinkedList<>(source);
         ArrayList<Sommet> chemin = new ArrayList<>();
       
-        while (!tempSource.isEmpty()) {
-
+        while (!tempSource.isEmpty() ) {
+            
             // Décision d'un index
             int index = 0;
             switch (_option) {
@@ -129,8 +129,11 @@ public class Graphe {
                     break;
                 
             }
+          
 
             Sommet s = tempSource.remove(index);
+            
+
            
             for(Sommet v : sortant.get(s)) {
                 degreeEntrant.put(v,degreeEntrant.get(v) -1);
@@ -139,7 +142,11 @@ public class Graphe {
                 }
             }
             
+  
             chemin.add(s);
+            
+
+            
         }
         return chemin;
     }
@@ -149,6 +156,15 @@ public class Graphe {
      */
     public ArrayList<Sommet> triTopologique() {
         return triTopologique(FIRST);
+    }
+
+    private boolean allVisited(TreeMap<Sommet, Integer>_entrant) {
+        for(Sommet s :_entrant.keySet() ) {
+            if (_entrant.get(s) != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //#endregion 
@@ -309,7 +325,7 @@ public class Graphe {
 
           
             
-            if ((isLastSituation(_chemin) || (dist >= averageTheorical &&  meilleursSolution.size() < _k)) ) { // Condition de sortie -> Si c'est la dernière situation, ou que la distance
+            if ((isLastSituation(_chemin) || ( meilleursSolution.size() > _k)) ) { // Condition de sortie -> Si c'est la dernière situation, ou que la distance
 
                 if (isLastSituation(_chemin)) {
 
