@@ -180,7 +180,7 @@ public class FileManager {
         return res;
     }
 
-    public static String getVilleByMembre(String _member) throws Exception{
+    public static String getVilleByMembre(String _member) throws IOException{
         TreeMap<String,ArrayList<String>> membres = exportMembre();
 
         for (String ville : membres.keySet()) {
@@ -188,7 +188,7 @@ public class FileManager {
                 return ville;
             }
         }
-        throw new Exception("City Not Found");
+        throw new IOException("City Not Found");
     }
 
     public static Scenario getScenario(String _path) throws Exception{
@@ -209,14 +209,13 @@ public class FileManager {
         File file = new File("ressources/data/membres_APPLI.txt");
         try (Scanner scanner = new Scanner(file, "UTF-8")) {
             while(scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().split("");
+                String[] line = scanner.nextLine().split(" ");
 
                 membres.add(line[0]);
             }
         } catch (IOException e) {
             throw new IOException("Le fichier n'existe pas");
         }
-
         return membres;
     }
 
