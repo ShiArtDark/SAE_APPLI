@@ -17,18 +17,16 @@ public class Graphe {
     private final LinkedList<Sommet> source;
     private TreeMap<Integer,ArrayList<ArrayList<Sommet>>> cheminRecursif;
     private ArrayList<ArrayList<Sommet>> meilleursSolution;
-    private final int minTheorical;
-    private final double averageTheorical;
+    // private final int minTheorical;
+    // private final double averageTheorical;
 
     private TreeMap<String, ArrayList<Integer>> distances;
     private TreeMap<String, Integer> villeID;
     private int n =0;
-    private int nbSolution;
     
     public static final int FIRST = 0;
     public static final int DISTANCE = 1;
     public static final int DEGREE = 2;
-
 
     // ======================== CONSTRUCTEUR ========================
 
@@ -64,8 +62,8 @@ public class Graphe {
                 source.add(som);
             }
         }
-        minTheorical = getDistance(triTopologique(DISTANCE));
-        averageTheorical = minTheorical*3;
+        // minTheorical = getDistance(triTopologique(DISTANCE));
+        // averageTheorical = minTheorical*1.5;
     }
 
     // ======================== GET/SET ========================
@@ -129,12 +127,8 @@ public class Graphe {
                     break;
                 
             }
-          
-
             Sommet s = tempSource.remove(index);
             
-
-           
             for(Sommet v : sortant.get(s)) {
                 degreeEntrant.put(v,degreeEntrant.get(v) -1);
                 if (degreeEntrant.get(v) == 0) {
@@ -142,29 +136,18 @@ public class Graphe {
                 }
             }
             
-  
             chemin.add(s);
-            
-
             
         }
         return chemin;
     }
+
     /**
      * Par défaut, on veut que le tri topologique nous retourne le premier élément, c'est le tri topologique vu en cours
      * @return un chemin de sommet
      */
     public ArrayList<Sommet> triTopologique() {
         return triTopologique(FIRST);
-    }
-
-    private boolean allVisited(TreeMap<Sommet, Integer>_entrant) {
-        for(Sommet s :_entrant.keySet() ) {
-            if (_entrant.get(s) != 0) {
-                return false;
-            }
-        }
-        return true;
     }
 
     //#endregion 
@@ -181,7 +164,6 @@ public class Graphe {
         TreeMap<Sommet,Integer> degEntrant = new TreeMap<>(entrant);
         LinkedList<Sommet> tempSource =  new LinkedList<>(source);
         HashMap<Pair<Integer, Integer>, Integer> cacheDistance = new HashMap<>(); // Le cache nous permet d'éviter les calculs inutiles de distances
-        nbSolution = _k;
         meilleursSolution = new ArrayList<>();
         elagage( degEntrant, tempSource, new ArrayList<>(), _k, cacheDistance);
 
@@ -213,29 +195,6 @@ public class Graphe {
             } 
         }
 
-     
-        
- 
-        return true;
-    }
-
-
-    /**
-     * Cette méthode permet de savoir si un chemin est valide, 
-     * il est valide si et seulement si le début et la fin corresponde à Vélizy
-     * si la taille du chemin correspond à la taille de tout les sommets du graphe
-     * @param _path
-     * @return Vrai si c'est le cas, sinon Faux
-     */
-    private boolean pathIsValid(ArrayList<Sommet> _path) {
-        if(_path.get(0).getName().compareTo("Velizy") != 0 || _path.get(_path.size()-1).getName().compareTo("Velizy") != 0) {
-            return false;
-        }
-
-        if (_path.size() != sortant.size()) {
-            return false;
-        }
-
         return true;
     }
 
@@ -249,13 +208,17 @@ public class Graphe {
         if (!_chemin.isEmpty()) {
 
             Sommet last = _chemin.get(_chemin.size()-1);
-            if (last.getName() == "Velizy" && last.getPass() == 1) {
-                return true;
+            if (last.getName() != "Velizy" && last.getPass() != 1) {
+                return false;
             }
+
+            if (_chemin.size() != sortant.size()) {
+                return false;
+            }
+
+            return true;
         }
         return false;
-
-
     }
 
     /**
@@ -278,6 +241,10 @@ public class Graphe {
         }
     }
 
+    /**
+     * Cette méthode est un tri par insertion, elle permet de trier une listes de chemins dans l'ordre croissant
+     * @param _chemins
+     */
     private void insertionSort(ArrayList<ArrayList<Sommet>> _chemins) {
         
         int len = _chemins.size();
@@ -309,7 +276,7 @@ public class Graphe {
      * @param _cacheDistance    
      * @return
      */
-    public int elagage(
+    public void elagage(
         TreeMap<Sommet,Integer> _entrant,
         LinkedList<Sommet> _source,
         ArrayList<Sommet> _chemin,
@@ -318,7 +285,7 @@ public class Graphe {
         ){
             n++;
             if (n > 10_000_000) {
-                return 0;
+                return;
             }
            
             int dist = getDistance(_chemin);
@@ -337,7 +304,7 @@ public class Graphe {
                     if (meilleursSolution.size() < _k) {
                         for(ArrayList<Sommet> chm : meilleursSolution) {
                             if(isSame(_chemin, chm)) {
-                                return dist;
+                                return;
                             }
                         }
                         meilleursSolution.add(_chemin) ;
@@ -346,7 +313,7 @@ public class Graphe {
                         if (dist < bestDist) {
                             for(ArrayList<Sommet> chm : meilleursSolution) {
                                 if(isSame(_chemin, chm)) {
-                                    return dist;
+                                    return;
                                 }
                             }
                             meilleursSolution.remove(0);
@@ -355,11 +322,10 @@ public class Graphe {
                     }
 
                 }
-                return dist;
+                return;
 
             } else {
 
-                int valeur = Integer.MAX_VALUE;
                 float avg = Integer.MAX_VALUE;
 
                 if(!_source.isEmpty() && !_chemin.isEmpty()) {
@@ -421,27 +387,22 @@ public class Graphe {
                             tmpSource.add(v);
                         }
                     }
-                    
-                    
                     insertionSort(tmpSource, s);
-                    
-                    
-
-                    
-              
-                    valeur = Math. min( valeur, elagage( tmpEntrant, tmpSource, tmpChemin, _k ,_cacheDistance));
-
-                    
-                 
-                    
+                    elagage( tmpEntrant, tmpSource, tmpChemin, _k ,_cacheDistance);
                 }
-                return valeur;   
+                return;   
             }
     }
 
     
     
-        
+    /**
+     * Cette méthode permet d'effectuer un tri topologique du premier élément de la source de manière récursive
+     * @param _entrant
+     * @param _source
+     * @param _chemin
+     * @return
+     */
     public ArrayList<Sommet> topologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
 
         if(_source.isEmpty()) {
@@ -467,13 +428,12 @@ public class Graphe {
      * @param _entrant
      * @param _source
      * @param _chemin
-     */
-    private void allTopologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
+     private void allTopologogiqueRecursif(TreeMap<Sommet, Integer> _entrant, LinkedList<Sommet> _source, ArrayList<Sommet> _chemin) {
         n++;
         if (getDistance(_chemin)>(averageTheorical) ) {
             return ;
         }
-
+        
         if(_source.isEmpty()) {
             if (pathIsValid(_chemin)) {
                 int dist = getDistance(_chemin);
@@ -481,7 +441,7 @@ public class Graphe {
                 if (!cheminRecursif.containsKey(dist)) {
                     cheminRecursif.put(dist, new ArrayList<>());
                 }
-
+                
                 
                 ArrayList<ArrayList<Sommet>> tmpChemins = cheminRecursif.get(dist);
                 for (ArrayList<Sommet> chem : tmpChemins) {
@@ -493,33 +453,33 @@ public class Graphe {
                 cheminRecursif.put(dist, tmpChemins);
                 
             }
-
-        } else {
-
             
-            for (int i = 0; i < _source.size(); i++) {
-                TreeMap<Sommet,Integer> tmpEntrant = new TreeMap<>(_entrant);
-                LinkedList<Sommet> tmpSource = new LinkedList<>(_source);
-                ArrayList<Sommet> tmpChemin = new ArrayList<>(_chemin);
-
-                Sommet s = tmpSource.remove(i);
-                
-                for (Sommet v : sortant.get(s)) {
-                    tmpEntrant.put(v, tmpEntrant.get(v)-1);
-                    if(tmpEntrant.get(v) == 0 ) {
-                        tmpSource.add(v);
-                    }
-                }
-                
-                
-                tmpChemin.add(s);
-                
-                allTopologogiqueRecursif(tmpEntrant, tmpSource, tmpChemin);
-                
-            }
-        }
+        } else {
+            
         
-    } 
+        for (int i = 0; i < _source.size(); i++) {
+            TreeMap<Sommet,Integer> tmpEntrant = new TreeMap<>(_entrant);
+            LinkedList<Sommet> tmpSource = new LinkedList<>(_source);
+            ArrayList<Sommet> tmpChemin = new ArrayList<>(_chemin);
+            
+            Sommet s = tmpSource.remove(i);
+            
+            for (Sommet v : sortant.get(s)) {
+                tmpEntrant.put(v, tmpEntrant.get(v)-1);
+                if(tmpEntrant.get(v) == 0 ) {
+                    tmpSource.add(v);
+                }
+            }
+            
+            
+            tmpChemin.add(s);
+            
+            allTopologogiqueRecursif(tmpEntrant, tmpSource, tmpChemin);
+            
+        }
+    }  
+} 
+*/
 
     /**
      * Retourne l'index minimum des sources par rapport au dernier du chemin
@@ -548,6 +508,14 @@ public class Graphe {
 
     //#endregion
 
+    /**
+     * Cette méthode prend une source et détermine l'indice du sommet qui possède le plus de degré entrant dans une source. Si la source correspond à la même ville
+     * Elle priorisera d'abord soi-même.
+     * @param _chemin
+     * @param _source
+     * @param _entrant
+     * @return
+     */
     private int getMaxIndexEntrant(ArrayList<Sommet> _chemin, LinkedList<Sommet> _source, TreeMap<Sommet, Integer> _entrant) {
         int index = 0;
         boolean isSame = false;
@@ -598,42 +566,32 @@ public class Graphe {
         
         return res;
     }
+
+    /**
+     * Cette méthode permet de savoir le nombre d'itération nécessaire pendant la récursivité.
+     * @return un entier
+     */
     public int getIteration() {
         return n;
     }
 
-    public TreeMap<Integer,ArrayList<ArrayList<Sommet>>> getSolutionK(int _k) {
-        TreeMap<Integer, ArrayList<ArrayList<Sommet>>> resultat = new TreeMap<>();
-        
-
-        for(int dist : cheminRecursif.keySet()) {
-            for(ArrayList<Sommet> chemin : cheminRecursif.get(dist)) {
-                
-                if (!resultat.containsKey(dist)) {
-                    resultat.put(dist, new ArrayList<>());
-                }
-                ArrayList<ArrayList<Sommet>> tmpChemins = resultat.get(dist);
-                tmpChemins.add(chemin);
-                resultat.put(dist, tmpChemins);
-                _k--;
-                if(_k < 1) {
-                    return resultat;
-                }
-                
-            }
-            
-
-        }
-        return  resultat;
-    }
-
+    /**
+     * Permet d'obtenir les meilleurs solutions d'un chemin à partir d'un entier _k.
+     * @param _k est une option qui permet d'obtenir le nombre maximale de chemin à retourner
+     * @return une liste de liste de chemin
+     */
     public ArrayList<ArrayList<Sommet>> calculeDesSolutions(int _k) {
         triTopologiqueRecursif(_k);
         insertionSort(meilleursSolution);
         return meilleursSolution;
     }
 
-    public ArrayList<String> convertChemin(ArrayList<Sommet> _chemin) {
+    /**
+     * Permet de convertir un chemin sans avoir les polarités
+     * @param _chemin
+     * @return une liste de chaine de caractère.
+     */
+    public static ArrayList<String> convertChemin(ArrayList<Sommet> _chemin) {
         ArrayList<String> chemin = new ArrayList<>();
         chemin.add(_chemin.get(0).getName());
 
@@ -644,8 +602,6 @@ public class Graphe {
 
             chemin.add(_chemin.get(i).getName());
         }
-
         return chemin;
-        
     }
 }
