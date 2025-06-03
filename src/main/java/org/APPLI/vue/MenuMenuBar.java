@@ -1,11 +1,19 @@
 package org.APPLI.vue;
 
-import javafx.scene.control.*;
-import org.APPLI.modele.Scenario;
+import java.io.File;
+
 import org.APPLI.modele.FileManager;
 import org.APPLI.modele.Graphe;
+import org.APPLI.modele.Scenario;
 
-import java.io.File;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleGroup;
 
 public class MenuMenuBar extends MenuBar {
 
@@ -108,6 +116,8 @@ public class MenuMenuBar extends MenuBar {
         } catch (Exception e) {
             System.out.println("Erreur dans MenuMenuBar : " + e.getMessage());
         }
+
+        Menu creator = new Menu("Création Scénario");
     }
 
     private void notifyAlgoSelected(int option, int k) {

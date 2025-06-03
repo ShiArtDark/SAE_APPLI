@@ -1,21 +1,14 @@
 package org.APPLI;
 
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-
 import java.io.File;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
-
 import org.APPLI.controleur.Controleur;
-import org.APPLI.modele.FileManager;
-import org.APPLI.modele.Graphe;
-import org.APPLI.modele.Sommet;
 import org.APPLI.vue.HBoxRoot;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
@@ -42,6 +35,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-
-    
-   
