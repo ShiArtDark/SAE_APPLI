@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 import org.APPLI.modele.Scenario;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class VilleListView extends VBox {
@@ -37,7 +38,7 @@ public class VilleListView extends VBox {
         }
 
         // Récupère uniquement les membres actifs dans ce scénario
-        var membresScenario = scenario.getAllMembre();
+        List<String> membresScenario = new ArrayList<>(scenario.getAllMembre());
 
         for (Map.Entry<String, ArrayList<String>> entry : membresParVille.entrySet()) {
             String ville = entry.getKey();

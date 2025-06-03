@@ -98,6 +98,8 @@ import org.APPLI.modele.Sommet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class DistanceView extends VBox {
@@ -161,8 +163,8 @@ public class DistanceView extends VBox {
 
         ArrayList<Sommet> listeSommets = new ArrayList<>();
 
-        var distances = chScenario.getDistance();
-        var membres = chScenario.getMembres();
+        Map<String, ArrayList<Integer>> distances = chScenario.getDistance();
+        TreeMap<String, ArrayList<String>> membres = chScenario.getMembres();
 
         for (String ville : distances.keySet()) {
 
