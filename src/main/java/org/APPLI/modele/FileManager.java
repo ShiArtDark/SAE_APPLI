@@ -58,7 +58,10 @@ public class FileManager {
                 }
                 membres.get(line[1]).add(line[0]);
                 
-            }
+          
+             }
+        } catch (IOException e) {
+            throw new IOException("Le ficier n'existe pas");
         }
         return membres;
     }
@@ -198,6 +201,23 @@ public class FileManager {
         
 
         return new Scenario(_path, distances, membre, allMember, villeID, IDVille, map);
+    }
+
+    public static TreeSet<String> exportSetMembre() throws IOException {
+        TreeSet<String> membres = new TreeSet<>();
+
+        File file = new File("ressources/data/membres_APPLI.txt");
+        try (Scanner scanner = new Scanner(file, "UTF-8")) {
+            while(scanner.hasNextLine()) {
+                String[] line = scanner.nextLine().split("");
+
+                membres.add(line[0]);
+            }
+        } catch (IOException e) {
+            throw new IOException("Le fichier n'existe pas");
+        }
+
+        return membres;
     }
 
 
