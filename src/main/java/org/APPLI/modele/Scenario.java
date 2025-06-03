@@ -1,4 +1,3 @@
-
 package org.APPLI.modele;
 
 import java.util.ArrayList;
@@ -14,16 +13,16 @@ public class Scenario {
     private final TreeMap<Integer, String> IDVille;
     private final Graphe map;
 
-
+    
     public Scenario(
-            String _name,
-            TreeMap<String, ArrayList<Integer>> _distance,
-            TreeMap<String, ArrayList<String>>  _membre,
-            TreeSet<String> _allMember,
-            TreeMap<String, Integer> _villeID,
-            TreeMap<Integer, String> _IdVille,
-            Graphe _map
-    ) throws Exception
+        String _name,
+        TreeMap<String, ArrayList<Integer>> _distance,
+        TreeMap<String, ArrayList<String>>  _membre,
+        TreeSet<String> _allMember,
+        TreeMap<String, Integer> _villeID,
+        TreeMap<Integer, String> _IdVille,
+        Graphe _map
+    ) throws Exception 
     {
 
         name =_name;
@@ -36,7 +35,7 @@ public class Scenario {
 
 
     }
-
+    
     public String getName() {
         return name;
     }
@@ -44,11 +43,11 @@ public class Scenario {
     public TreeMap<String, ArrayList<Integer>>  getDistance() {
         return distances;
     }
-
+    
     public TreeMap<String, ArrayList<String>> getMembres() {
         return membre;
     }
-
+    
     public TreeSet<String> getAllMembre() {
         return allMember;
     }
@@ -64,6 +63,5 @@ public class Scenario {
     public Graphe getGraphe() {
         return map;
     }
-
 
 }
