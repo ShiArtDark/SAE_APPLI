@@ -38,7 +38,6 @@ public class Trade {
         return client+" ("+clientTown+")";
     }
 
-
     public void setId(int _id) {
         id =_id;
     }

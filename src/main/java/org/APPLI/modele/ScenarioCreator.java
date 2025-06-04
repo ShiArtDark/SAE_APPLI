@@ -73,7 +73,7 @@ public class ScenarioCreator {
             }
         }
     }
-
+    
     public void resetTradeList() {
         tradeList.clear();
     }

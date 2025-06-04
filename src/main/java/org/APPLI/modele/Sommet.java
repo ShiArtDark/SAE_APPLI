@@ -105,20 +105,6 @@ public class Sommet {
         return distance.get(_sommet.getId());
     }
 
-    @Override
-    public boolean equals(Object _obj) {
-        if (_obj == this) {
-            return true;
-        }
-
-        if (_obj instanceof Sommet sommet) {
-            if (sommet.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-       
-    }
 
 }
 
