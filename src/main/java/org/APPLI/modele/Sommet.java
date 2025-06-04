@@ -32,10 +32,16 @@ public class Sommet {
         id = villeID.get(name);
     }
 
+
+
+ 
+
     public Sommet(String _name, int _pass) {
         name = _name;
         pass = _pass;
     }
+
+
 
     // =================== Get/Set ==========================
     public void setName(String _name) {
@@ -96,6 +102,10 @@ public class Sommet {
         return 0;
     }
 
+    public boolean  isVelizyEnd() {
+        return name.compareTo("Velizy") == 0 && pass == 1;
+    }
+    
     @Override
     public String toString() {
         return name+((pass == 0)?"+" : "-");
@@ -105,6 +115,20 @@ public class Sommet {
         return distance.get(_sommet.getId());
     }
 
+    @Override
+    public boolean equals(Object _obj) {
+        if (_obj == this) {
+            return true;
+        }
+
+        if (_obj instanceof Sommet sommet) {
+            if (sommet.getId() == id) {
+                return true;
+            }
+        }
+
+        return false;
+       
+    }
 
 }
-
