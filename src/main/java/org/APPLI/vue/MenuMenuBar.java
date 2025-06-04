@@ -1,7 +1,9 @@
 package org.APPLI.vue;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.APPLI.controleur.ChangeController;
 import org.APPLI.modele.FileManager;
 import org.APPLI.modele.Graphe;
 import org.APPLI.modele.Scenario;
@@ -16,6 +18,9 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 
 public class MenuMenuBar extends MenuBar {
+    private ToggleGroup modeGroup;
+    private ToggleGroup scegroup;
+    private Menu scenarioMenu;
 
     public interface ScenarioSelectionListener {
         void onScenarioSelected(Scenario scenario);
@@ -37,11 +42,12 @@ public class MenuMenuBar extends MenuBar {
     }
 
     public MenuMenuBar() {
+        
         try {
             // --- Menu Scénarios ---
             File scenarioFolder = new File("ressources/scenario");
-            ToggleGroup scegroup = new ToggleGroup();
-            Menu scenarioMenu = new Menu("Scénarios");
+            scegroup = new ToggleGroup();
+            scenarioMenu = new Menu("Scénarios");
 
             File[] files = scenarioFolder.listFiles();
             if (files != null) {
@@ -111,13 +117,66 @@ public class MenuMenuBar extends MenuBar {
                 });
             });
 
-            this.getMenus().add(algoMenu);
+            getMenus().add(algoMenu);
+
+            Menu mode = new Menu("Mode");
+            modeGroup = new ToggleGroup();
+            
+            RadioMenuItem algo = new RadioMenuItem("Calcul de chemins");
+            RadioMenuItem  createur = new RadioMenuItem("Créer scénario");
+            algo.setToggleGroup(modeGroup);
+            algo.setSelected(true);
+            algo.setUserData(0);
+            algo.setOnAction(new ChangeController());
+
+
+            createur.setToggleGroup(modeGroup);
+            createur.setUserData(1);
+            createur.setOnAction(new ChangeController());
+        
+            
+
+            mode.getItems().addAll(algo, createur);
+
+            getMenus().add(mode);
+        
+                
+
+
+
 
         } catch (Exception e) {
             System.out.println("Erreur dans MenuMenuBar : " + e.getMessage());
         }
 
-        Menu creator = new Menu("Création Scénario");
+     
+        
+    }
+
+    public void refreshScenarioSelection() throws IOException {
+        scenarioMenu.getItems().clear();
+        File dir = new File("ressources/scenario");
+        
+        for(File file : dir.listFiles()) {
+            String scenarioName = file.getName();
+
+            RadioMenuItem scenarioItem = new RadioMenuItem(scenarioName);
+            scenarioItem.setToggleGroup(scegroup);
+
+            scenarioItem.setOnAction(e -> {
+                try {
+                    Scenario selectedScenario = FileManager.getScenario(scenarioName);
+                    System.out.println("Scénario sélectionné : " + selectedScenario.getName());
+                    if (scenarioListener != null) {
+                        scenarioListener.onScenarioSelected(selectedScenario);
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Erreur chargement scénario : " + ex.getMessage());
+                }
+            });
+
+            scenarioMenu.getItems().add(scenarioItem);
+        }
     }
 
     private void notifyAlgoSelected(int option, int k) {

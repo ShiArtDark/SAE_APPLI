@@ -14,13 +14,14 @@ public class HBoxRoot extends VBox {
     private static MenuMenuBar menuMenuBar;
     private static HBoxVue hBoxVue;
     private static ScenarioCreatorView scenarioCreatorView;
-    private Controleur controleur;
+    private static Controleur controleur;
     private static StackPane stackPane;
 
     public HBoxRoot() {
         super(10);
-        stackPane = new StackPane();
+        menuMenuBar =new MenuMenuBar();
         controleur = new Controleur();
+        stackPane = new StackPane();
         
         
         HBox principale = new HBox(10);
@@ -34,12 +35,12 @@ public class HBoxRoot extends VBox {
         scenarioCreatorView.setAccessibleText("creatorView"); 
         principale.setAccessibleText("mainWindow");
         
-        stackPane.getChildren().addAll(scenarioCreatorView, principale);
+        stackPane.getChildren().addAll(principale, scenarioCreatorView);
 
         this.getChildren().addAll(controleur.getMenuMenuBar(), stackPane);
     }
 
-    public Controleur getControleur() {
+    public static Controleur getControleur() {
         return controleur;
     }
 
@@ -57,6 +58,8 @@ public class HBoxRoot extends VBox {
     public static StackPane getStackPane() {
         return stackPane;
     }
+
+
 
     
 

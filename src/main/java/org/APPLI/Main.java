@@ -3,7 +3,6 @@ package org.APPLI;
 
 import java.io.File;
 
-import org.APPLI.controleur.Controleur;
 import org.APPLI.vue.HBoxRoot;
 
 import javafx.application.Application;
@@ -16,7 +15,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         // Utilise HBox comme conteneur de base
-        Controleur controleur = new Controleur();
         HBoxRoot root = new HBoxRoot();
 
         // Crée une scène

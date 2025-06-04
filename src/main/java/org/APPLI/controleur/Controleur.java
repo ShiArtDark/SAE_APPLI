@@ -1,19 +1,16 @@
 package org.APPLI.controleur;
 
-import org.APPLI.modele.Scenario;
-
 import java.util.ArrayList;
 
 import org.APPLI.modele.Graphe;
-import org.APPLI.modele.Sommet;
-
+import org.APPLI.modele.Scenario;
 import org.APPLI.modele.ScenarioCreator;
-
+import org.APPLI.modele.Sommet;
 import org.APPLI.vue.DistanceView;
 import org.APPLI.vue.HBoxRoot;
 import org.APPLI.vue.MenuMenuBar;
-import org.APPLI.vue.VilleListView;
 import org.APPLI.vue.OutputView;
+import org.APPLI.vue.VilleListView;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -110,16 +107,21 @@ public class Controleur implements EventHandler<ActionEvent> {
                         HBoxRoot.getCreator().getEdit().getEditMenu().setNumBox(scenarioCreator.getTradeList().size());
                         HBoxRoot.getCreator().getTableTradeSheet().refresh();
                         
+                        
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     
                 }
-                    
-                    
+                           
             }
 
-        }
+            try {
+                
+                HBoxRoot.getControleur().getMenuMenuBar().refreshScenarioSelection();
+            } catch (Exception e) {
+            }
+        } 
     }
 
     // ========== PARTIE ALGORITHMES  ==========
